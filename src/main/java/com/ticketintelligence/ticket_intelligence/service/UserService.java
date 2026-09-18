@@ -43,11 +43,6 @@ public class UserService {
             );
         }
 
-        /*
-         * seller is intentionally NOT required.
-         *
-         * A customer can exist before purchase.
-         */
         return userRepository.save(user);
     }
 
@@ -103,8 +98,6 @@ public class UserService {
 
     // ============================================================
     // CUSTOMER REGISTRATION
-    //
-    // Customer can register WITHOUT a seller.
     // ============================================================
 
     public User registerCustomer(
@@ -139,10 +132,6 @@ public class UserService {
             );
         }
 
-        // --------------------------------------------------------
-        // Find existing customer using phone
-        // --------------------------------------------------------
-
         User existingCustomer = null;
 
         if (normalizedPhone != null &&
@@ -156,10 +145,6 @@ public class UserService {
                             .orElse(null);
         }
 
-        // --------------------------------------------------------
-        // Try email
-        // --------------------------------------------------------
-
         if (existingCustomer == null &&
                 normalizedEmail != null &&
                 !normalizedEmail.isBlank()) {
@@ -171,10 +156,6 @@ public class UserService {
                             )
                             .orElse(null);
         }
-
-        // --------------------------------------------------------
-        // Existing user
-        // --------------------------------------------------------
 
         if (existingCustomer != null) {
 
@@ -189,24 +170,20 @@ public class UserService {
                 );
             }
 
-            // Optional seller validation for legacy requests
+            // ----------------------------------------------------
+            // ADD SELLER WITHOUT REMOVING EXISTING SELLERS
+            // ----------------------------------------------------
+
             if (sellerId != null &&
                     !sellerId.isBlank()) {
 
                 Seller requestedSeller =
                         findSeller(sellerId);
 
-                if (existingCustomer.getSeller() != null &&
-                        !existingCustomer.getSeller()
-                                .getId()
-                                .equals(
-                                        requestedSeller.getId()
-                                )) {
-
-                    throw new IllegalArgumentException(
-                            "This customer belongs to another seller."
-                    );
-                }
+                addSellerToCustomer(
+                        existingCustomer,
+                        requestedSeller
+                );
             }
 
             if (name != null &&
@@ -249,27 +226,16 @@ public class UserService {
             );
 
             existingCustomer.setActive(true);
-
             existingCustomer.setAccountVerified(true);
-
-            /*
-             * IMPORTANT:
-             * Do NOT set seller here.
-             *
-             * Existing seller relationship stays unchanged.
-             * For a brand-new user it remains NULL.
-             */
 
             return userRepository.save(
                     existingCustomer
             );
         }
 
-        // --------------------------------------------------------
+        // ========================================================
         // NEW GLOBAL CUSTOMER
-        //
-        // No seller required.
-        // --------------------------------------------------------
+        // ========================================================
 
         String customerId =
                 generateCustomerId();
@@ -293,7 +259,19 @@ public class UserService {
 
         customer.setActive(true);
         customer.setAccountVerified(true);
-        customer.setSeller(null);
+
+        // Add requested seller through many-to-many
+        if (sellerId != null &&
+                !sellerId.isBlank()) {
+
+            Seller requestedSeller =
+                    findSeller(sellerId);
+
+            addSellerToCustomer(
+                    customer,
+                    requestedSeller
+            );
+        }
 
         return userRepository.save(customer);
     }
@@ -350,22 +328,16 @@ public class UserService {
                 );
             }
 
-            /*
-             * Global customer can now become associated
-             * with this seller.
-             */
+            // ====================================================
+            // IMPORTANT:
+            // ADD SELLER.
+            // DO NOT REMOVE EXISTING SELLERS.
+            // ====================================================
 
-            if (existing.getSeller() != null &&
-                    !existing.getSeller()
-                            .getId()
-                            .equals(seller.getId())) {
-
-                throw new IllegalArgumentException(
-                        "This customer is already linked to another seller."
-                );
-            }
-
-            existing.setSeller(seller);
+            addSellerToCustomer(
+                    existing,
+                    seller
+            );
 
             if (name != null &&
                     !name.isBlank()) {
@@ -397,9 +369,9 @@ public class UserService {
             return userRepository.save(existing);
         }
 
-        // --------------------------------------------------------
-        // Brand-new seller customer
-        // --------------------------------------------------------
+        // ========================================================
+        // BRAND-NEW SELLER CUSTOMER
+        // ========================================================
 
         String customerId =
                 generateCustomerId();
@@ -426,9 +398,13 @@ public class UserService {
                         seller
                 );
 
-        customer.setSeller(seller);
         customer.setActive(true);
         customer.setAccountVerified(false);
+
+        addSellerToCustomer(
+                customer,
+                seller
+        );
 
         return userRepository.save(customer);
     }
@@ -478,23 +454,12 @@ public class UserService {
 
         if (existing != null) {
 
-            if (existing.getSeller() == null) {
-
-                existing.setSeller(seller);
-
-                return userRepository.save(existing);
-            }
-
-            if (existing.getSeller()
-                    .getId()
-                    .equals(seller.getId())) {
-
-                return existing;
-            }
-
-            throw new IllegalArgumentException(
-                    "Customer belongs to another seller."
+            addSellerToCustomer(
+                    existing,
+                    seller
             );
+
+            return userRepository.save(existing);
         }
 
         return createCustomerForSeller(
@@ -609,8 +574,9 @@ public class UserService {
             return Optional.empty();
         }
 
-        return userRepository
-                .findByEmailIgnoreCase(normalized);
+        return userRepository.findByEmailIgnoreCase(
+                normalized
+        );
     }
 
     // ============================================================
@@ -655,14 +621,6 @@ public class UserService {
 
     // ============================================================
     // LOGIN
-    //
-    // ADMIN:
-    // SELLER-XXXX|phone
-    // SELLER-XXXX|email
-    //
-    // CUSTOMER:
-    // CUST-XXXXXX|phone
-    // CUST-XXXXXX|email
     // ============================================================
 
     public User findByLoginIdentifier(
@@ -684,9 +642,9 @@ public class UserService {
         String second =
                 secondIdentifier.trim();
 
-        // --------------------------------------------------------
+        // ========================================================
         // CUSTOMER LOGIN
-        // --------------------------------------------------------
+        // ========================================================
 
         if (first.toUpperCase().startsWith("CUST-")) {
 
@@ -709,15 +667,16 @@ public class UserService {
                     customer,
                     second
             )) {
+
                 return customer;
             }
 
             return null;
         }
 
-        // --------------------------------------------------------
+        // ========================================================
         // SELLER / ADMIN LOGIN
-        // --------------------------------------------------------
+        // ========================================================
 
         if (first.toUpperCase().startsWith("SELLER-")) {
 
@@ -860,15 +819,12 @@ public class UserService {
     ) {
 
         if (customer == null ||
-                seller == null ||
-                customer.getSeller() == null) {
+                seller == null) {
 
             return false;
         }
 
-        return customer.getSeller()
-                .getId()
-                .equals(seller.getId());
+        return customer.belongsToSeller(seller);
     }
 
     // ============================================================
@@ -966,6 +922,36 @@ public class UserService {
         }
 
         return existing;
+    }
+
+    // ============================================================
+    // ADD SELLER TO CUSTOMER
+    // ============================================================
+
+    private void addSellerToCustomer(
+            User customer,
+            Seller seller
+    ) {
+
+        if (customer == null ||
+                seller == null) {
+
+            return;
+        }
+
+        if (customer.getSellers() == null) {
+            customer.setSellers(
+                    new java.util.HashSet<>()
+            );
+        }
+
+        customer.getSellers().add(seller);
+
+        // Keep legacy seller field populated
+        // for compatibility with existing code.
+        if (customer.getSeller() == null) {
+            customer.setSeller(seller);
+        }
     }
 
     // ============================================================

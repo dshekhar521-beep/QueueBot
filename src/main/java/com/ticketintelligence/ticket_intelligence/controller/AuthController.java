@@ -575,10 +575,6 @@ public class AuthController {
     // CURRENT USER
     // ============================================================
 
-    // ============================================================
-    // CURRENT USER
-    // ============================================================
-
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(
             Authentication authentication
@@ -608,7 +604,6 @@ public class AuthController {
             response.put("success", true);
             response.put("username", username);
 
-
             // ----------------------------------------------------
             // NEW CUSTOMER SESSION
             //
@@ -631,7 +626,6 @@ public class AuthController {
                                 username.trim()
                         );
 
-
                 if (customer == null) {
 
                     return ResponseEntity.status(
@@ -644,7 +638,6 @@ public class AuthController {
                             )
                     );
                 }
-
 
                 response.put(
                         "customerId",
@@ -670,7 +663,6 @@ public class AuthController {
                         "role",
                         customer.getRole()
                 );
-
 
                 // A newly registered customer may not have
                 // a seller yet.
@@ -702,6 +694,73 @@ public class AuthController {
                     );
                 }
 
+                response.put(
+                        "authorities",
+                        authentication
+                                .getAuthorities()
+                                .stream()
+                                .map(
+                                        GrantedAuthority::getAuthority
+                                )
+                                .toList()
+                );
+
+                return ResponseEntity.ok(
+                        response
+                );
+            }
+
+            // ----------------------------------------------------
+            // SELLER / ADMIN SESSION
+            //
+            // Current authentication uses ADMIN-XXXX
+            // because CustomUserDetailsService stores
+            // user.getCustomerId() as the username.
+            // ----------------------------------------------------
+
+            User authenticatedUser =
+                    userService.findByCustomerId(username);
+
+            if (authenticatedUser != null &&
+                    authenticatedUser.getSeller() != null) {
+
+                Seller seller =
+                        authenticatedUser.getSeller();
+
+                response.put(
+                        "sellerId",
+                        seller.getSellerId()
+                );
+
+                response.put(
+                        "businessName",
+                        seller.getBusinessName()
+                );
+
+                response.put(
+                        "customerId",
+                        authenticatedUser.getCustomerId()
+                );
+
+                response.put(
+                        "name",
+                        authenticatedUser.getName()
+                );
+
+                response.put(
+                        "phone",
+                        authenticatedUser.getPhone()
+                );
+
+                response.put(
+                        "email",
+                        authenticatedUser.getEmail()
+                );
+
+                response.put(
+                        "role",
+                        authenticatedUser.getRole()
+                );
 
                 response.put(
                         "authorities",
@@ -714,22 +773,16 @@ public class AuthController {
                                 .toList()
                 );
 
-
                 return ResponseEntity.ok(
                         response
                 );
             }
 
-
             // ----------------------------------------------------
-            // SELLER / ADMIN SESSION
-            //
-            // Expected authenticated username:
+            // LEGACY SELLER / ADMIN SESSION
             //
             // SELLER-XXXX|PHONE
             // SELLER-XXXX|EMAIL
-            //
-            // This keeps seller/admin login compatible.
             // ----------------------------------------------------
 
             if (username != null &&
@@ -741,7 +794,6 @@ public class AuthController {
                                 2
                         );
 
-
                 if (parts.length == 2) {
 
                     String accountId =
@@ -749,7 +801,6 @@ public class AuthController {
 
                     String identifier =
                             parts[1].trim();
-
 
                     // ------------------------------------------------
                     // OLD CUSTOMER COMPATIBILITY
@@ -767,21 +818,18 @@ public class AuthController {
                                                 identifier
                                         );
 
-
                         if (customer == null) {
 
                             return ResponseEntity.status(
                                     HttpStatus.UNAUTHORIZED
                             ).body(
                                     Map.of(
-                                            "success",
-                                            false,
+                                            "success", false,
                                             "message",
                                             "Customer account could not be resolved."
                                     )
                             );
                         }
-
 
                         response.put(
                                 "customerId",
@@ -807,7 +855,6 @@ public class AuthController {
                                 "role",
                                 customer.getRole()
                         );
-
 
                         if (customer.getSeller() != null) {
 
@@ -836,7 +883,6 @@ public class AuthController {
                             );
                         }
 
-
                         response.put(
                                 "authorities",
                                 authentication
@@ -848,12 +894,10 @@ public class AuthController {
                                         .toList()
                         );
 
-
                         return ResponseEntity.ok(
                                 response
                         );
                     }
-
 
                     // ------------------------------------------------
                     // SELLER / ADMIN
@@ -868,28 +912,24 @@ public class AuthController {
                                         accountId
                                 );
 
-
                         if (seller == null) {
 
                             return ResponseEntity.status(
                                     HttpStatus.UNAUTHORIZED
                             ).body(
                                     Map.of(
-                                            "success",
-                                            false,
+                                            "success", false,
                                             "message",
                                             "Seller account could not be resolved."
                                     )
                             );
                         }
 
-
                         User user =
                                 userService.findByLoginIdentifier(
                                         accountId,
                                         identifier
                                 );
-
 
                         response.put(
                                 "sellerId",
@@ -900,7 +940,6 @@ public class AuthController {
                                 "businessName",
                                 seller.getBusinessName()
                         );
-
 
                         if (user != null) {
 
@@ -930,7 +969,6 @@ public class AuthController {
                             );
                         }
 
-
                         response.put(
                                 "authorities",
                                 authentication
@@ -942,14 +980,12 @@ public class AuthController {
                                         .toList()
                         );
 
-
                         return ResponseEntity.ok(
                                 response
                         );
                     }
                 }
             }
-
 
             // ----------------------------------------------------
             // FALLBACK
@@ -963,24 +999,15 @@ public class AuthController {
                             username
                     );
 
-
             if (fallbackUser == null) {
-
                 fallbackUser =
-                        userService.findByPhone(
-                                username
-                        );
+                        userService.findByPhone(username);
             }
 
-
             if (fallbackUser == null) {
-
                 fallbackUser =
-                        userService.findByEmail(
-                                username
-                        );
+                        userService.findByEmail(username);
             }
-
 
             if (fallbackUser != null) {
 
@@ -1008,7 +1035,6 @@ public class AuthController {
                         "role",
                         fallbackUser.getRole()
                 );
-
 
                 if (fallbackUser.getSeller() != null) {
 
@@ -1038,7 +1064,6 @@ public class AuthController {
                 }
             }
 
-
             response.put(
                     "authorities",
                     authentication
@@ -1050,11 +1075,9 @@ public class AuthController {
                             .toList()
             );
 
-
             return ResponseEntity.ok(
                     response
             );
-
 
         } catch (Exception e) {
 
@@ -1190,10 +1213,17 @@ public class AuthController {
         String username =
                 authentication.getName();
 
-        // Expected:
-        // SELLER-XXXX|phone
-        // SELLER-XXXX|email
+        // Current authentication uses ADMIN-XXXX / CUST-XXXX
+        User user =
+                userService.findByCustomerId(username);
 
+        if (user != null &&
+                user.getSeller() != null) {
+
+            return user.getSeller();
+        }
+
+        // Legacy SELLER-XXXX|phone/email support
         if (username != null &&
                 username.contains("|")) {
 
@@ -1210,7 +1240,7 @@ public class AuthController {
         }
 
         // Fallback
-        User user =
+        user =
                 userService.findByPhone(username);
 
         if (user == null) {

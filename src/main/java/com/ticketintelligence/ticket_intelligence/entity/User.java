@@ -2,15 +2,10 @@ package com.ticketintelligence.ticket_intelligence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -34,9 +29,6 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    /*
-     * Nullable because a customer may register with email only.
-     */
     private String phone;
 
     private String email;
@@ -57,10 +49,9 @@ public class User {
     private String role;
 
     // ============================================================
-    // SELLER
+    // LEGACY SELLER
     //
-    // Nullable because a customer can register before
-    // purchasing anything.
+    // Kept for compatibility with existing application code/data.
     // ============================================================
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -69,6 +60,21 @@ public class User {
             nullable = true
     )
     private Seller seller;
+
+    // ============================================================
+    // MULTIPLE SELLERS
+    //
+    // One customer can belong to multiple sellers.
+    // Uses existing user_sellers table.
+    // ============================================================
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_sellers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "seller_id")
+    )
+    private Set<Seller> sellers = new HashSet<>();
 
     // ============================================================
     // ACCOUNT STATUS
@@ -110,6 +116,10 @@ public class User {
 
         this.active = true;
         this.accountVerified = false;
+
+        if (seller != null) {
+            this.sellers.add(seller);
+        }
     }
 
     // ============================================================
@@ -124,9 +134,7 @@ public class User {
         return customerId;
     }
 
-    public void setCustomerId(
-            String customerId
-    ) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -134,9 +142,7 @@ public class User {
         return name;
     }
 
-    public void setName(
-            String name
-    ) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -144,9 +150,7 @@ public class User {
         return phone;
     }
 
-    public void setPhone(
-            String phone
-    ) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -154,9 +158,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(
-            String email
-    ) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -164,9 +166,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(
-            String password
-    ) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -174,9 +174,7 @@ public class User {
         return role;
     }
 
-    public void setRole(
-            String role
-    ) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -184,19 +182,23 @@ public class User {
         return seller;
     }
 
-    public void setSeller(
-            Seller seller
-    ) {
+    public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public Set<Seller> getSellers() {
+        return sellers;
+    }
+
+    public void setSellers(Set<Seller> sellers) {
+        this.sellers = sellers;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(
-            boolean active
-    ) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -204,11 +206,8 @@ public class User {
         return accountVerified;
     }
 
-    public void setAccountVerified(
-            boolean accountVerified
-    ) {
-        this.accountVerified =
-                accountVerified;
+    public void setAccountVerified(boolean accountVerified) {
+        this.accountVerified = accountVerified;
     }
 
     // ============================================================
@@ -225,33 +224,33 @@ public class User {
 
     // ============================================================
     // SELLER OWNERSHIP CHECK
-    //
-    // FIX:
-    // OrderService expects:
-    //
-    // customer.belongsToSeller(seller)
     // ============================================================
 
-    public boolean belongsToSeller(
-            Seller seller
-    ) {
+    public boolean belongsToSeller(Seller seller) {
 
         if (seller == null ||
-                this.seller == null) {
-
-            return false;
-        }
-
-        if (this.seller.getId() == null ||
                 seller.getId() == null) {
 
             return false;
         }
 
-        return this.seller
-                .getId()
-                .equals(
-                        seller.getId()
-                );
+        if (sellers != null) {
+
+            for (Seller linkedSeller : sellers) {
+
+                if (linkedSeller != null &&
+                        linkedSeller.getId() != null &&
+                        linkedSeller.getId()
+                                .equals(seller.getId())) {
+
+                    return true;
+                }
+            }
+        }
+
+        // Legacy compatibility
+        return this.seller != null &&
+                this.seller.getId() != null &&
+                this.seller.getId().equals(seller.getId());
     }
 }

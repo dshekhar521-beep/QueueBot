@@ -4,6 +4,8 @@ import com.ticketintelligence.ticket_intelligence.entity.Seller;
 import com.ticketintelligence.ticket_intelligence.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,33 +26,74 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // SELLER-SPECIFIC LOOKUPS
     // ============================================================
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            AND u.phone = :phone
+            """)
     Optional<User> findBySellerAndPhone(
-            Seller seller,
-            String phone
+            @Param("seller") Seller seller,
+            @Param("phone") String phone
     );
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            AND LOWER(u.email) = LOWER(:email)
+            """)
     Optional<User> findBySellerAndEmailIgnoreCase(
-            Seller seller,
-            String email
+            @Param("seller") Seller seller,
+            @Param("email") String email
     );
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            AND u.customerId = :customerId
+            """)
     Optional<User> findBySellerAndCustomerId(
-            Seller seller,
-            String customerId
+            @Param("seller") Seller seller,
+            @Param("customerId") String customerId
     );
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            """)
     List<User> findBySeller(
-            Seller seller
+            @Param("seller") Seller seller
     );
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            AND u.role = :role
+            """)
     List<User> findBySellerAndRole(
-            Seller seller,
-            String role
+            @Param("seller") Seller seller,
+            @Param("role") String role
     );
 
+    @Query("""
+            SELECT u
+            FROM User u
+            JOIN u.sellers s
+            WHERE s = :seller
+            AND u.role = :role
+            """)
     List<User> findByRoleAndSeller(
-            String role,
-            Seller seller
+            @Param("role") String role,
+            @Param("seller") Seller seller
     );
 
     // ============================================================
@@ -79,10 +122,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
             String email
     );
 
-    // FIX:
-    // Used by AdminController
+    // ============================================================
+    // SELLER-SPECIFIC EXISTS
+    // ============================================================
+
+    @Query("""
+            SELECT COUNT(u) > 0
+            FROM User u
+            JOIN u.sellers s
+            WHERE u.phone = :phone
+            AND s = :seller
+            """)
     boolean existsByPhoneAndSeller(
-            String phone,
-            Seller seller
+            @Param("phone") String phone,
+            @Param("seller") Seller seller
     );
 }
