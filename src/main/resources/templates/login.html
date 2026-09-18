@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Ticket Intelligence</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 42px;
+
+            box-shadow:
+                0 10px 30px rgba(15, 23, 42, 0.10);
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+
+            background: #3864e8;
+            color: white;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            font-size: 15px;
+            outline: none;
+
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #3864e8;
+            box-shadow: 0 0 0 3px rgba(56, 100, 232, 0.10);
+        }
+
+        .login-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #3864e8;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #2f55c7;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+
+            padding: 12px;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+        }
+
+        .logout-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+
+            padding: 12px;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+        }
+
+        .demo-info {
+            margin-top: 24px;
+
+            padding: 14px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+        .demo-info strong {
+            color: #334155;
+        }
+
+        .footer {
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+
+            .login-card {
+                padding: 30px 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <div class="logo-icon">
+                TI
+            </div>
+        </div>
+
+        <h1>Ticket Intelligence</h1>
+
+        <p class="subtitle">
+            Support Analytics & Intelligence Platform
+        </p>
+
+
+        <!-- Login error -->
+
+        <div class="error"
+             th:if="${param.error}">
+
+            Invalid username or password.
+
+        </div>
+
+
+        <!-- Logout message -->
+
+        <div class="logout-message"
+             th:if="${param.logout}">
+
+            You have been logged out successfully.
+
+        </div>
+
+
+        <form method="post"
+              action="/login">
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                        autofocus>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required>
+
+            </div>
+
+
+            <button
+                    type="submit"
+                    class="login-btn">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+
+        <div class="demo-info">
+
+            <strong>Demo Account</strong>
+
+            <br><br>
+
+            Username: <strong>admin</strong>
+
+            <br>
+
+            Password: <strong>admin123</strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Ticket Intelligence System
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QueueBot | Create Account</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef5ff,
+                    #f8fbff
+                );
+
+            color: #111827;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 28px;
+        }
+
+        /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+        .register-card {
+
+            width: min(1500px, 100%);
+
+            min-height: 780px;
+
+            background: #ffffff;
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(420px, 1fr)
+                minmax(620px, 1.08fr);
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.10);
+
+            border: 1px solid #e7edf7;
+        }
+
+        /* =========================================================
+           LEFT PANEL
+           ========================================================= */
+
+        .brand-panel {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    160deg,
+                    #182e52 0%,
+                    #101f39 55%,
+                    #081425 100%
+                );
+
+            color: white;
+
+            padding: 58px 50px 42px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-height: 780px;
+        }
+
+        .brand-logo {
+
+            font-size: 32px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 7px;
+        }
+
+        .brand-logo span {
+            color: #68aff2;
+        }
+
+        .brand-tagline {
+
+            font-size: 10px;
+
+            letter-spacing: 7px;
+
+            color: #8ebee9;
+
+            font-weight: 700;
+
+            margin-left: 2px;
+        }
+
+        .brand-copy {
+
+    margin-top: 25px;
+
+    max-width: 470px;
+}
+
+        .brand-copy h1 {
+
+            font-size: clamp(48px, 5vw, 70px);
+
+            line-height: 0.97;
+
+            letter-spacing: -3px;
+
+            font-weight: 800;
+
+            margin-bottom: 28px;
+        }
+
+        .brand-copy h1 span {
+            color: #67b0f3;
+        }
+
+        .brand-copy p {
+
+            font-size: 18px;
+
+            line-height: 1.65;
+
+            color: #d9e8f8;
+
+            max-width: 470px;
+        }
+
+        .robot-area {
+
+            position: absolute;
+
+            left: 45px;
+
+            bottom: 0;
+
+            width: 390px;
+
+            height: 300px;
+        }
+
+        .robot {
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: 0;
+
+            width: 270px;
+
+            max-width: 72%;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(
+                    0 18px 22px rgba(0, 0, 0, 0.32)
+                );
+        }
+
+        .speech-bubble {
+
+            position: absolute;
+
+            right: -25px;
+
+            bottom: 40px;
+
+            width: 215px;
+
+            padding: 20px 20px 18px;
+
+            border-radius: 22px;
+
+            background: #2e517b;
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            color: white;
+
+            font-size: 16px;
+
+            line-height: 1.25;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 14px 30px rgba(0,0,0,0.22);
+        }
+
+        .speech-bubble::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 32px;
+
+            bottom: -15px;
+
+            width: 28px;
+
+            height: 28px;
+
+            background: #2e517b;
+
+            transform: rotate(45deg);
+        }
+
+        .speech-line {
+
+            width: 56px;
+
+            height: 4px;
+
+            border-radius: 8px;
+
+            background: #62b3f3;
+
+            margin-top: 14px;
+        }
+
+        /* =========================================================
+           RIGHT PANEL
+           ========================================================= */
+
+        .form-panel {
+
+            padding: 38px 48px 50px;
+
+            overflow-y: auto;
+
+            max-height: 780px;
+        }
+
+        .top-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            margin-bottom: 18px;
+        }
+
+        .back-link {
+
+            color: #4678e8;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-heading {
+
+            margin-bottom: 34px;
+        }
+
+        .form-heading h2 {
+
+            font-size: clamp(38px, 4vw, 50px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+            color: #111827;
+
+            margin-bottom: 14px;
+        }
+
+        .form-heading p {
+
+            font-size: 18px;
+
+            color: #718096;
+
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           TABS
+           ========================================================= */
+
+        .tabs {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 5px;
+
+            background: #f2f5f9;
+
+            border: 1px solid #e1e7ef;
+
+            border-radius: 17px;
+
+            padding: 6px;
+
+            margin-bottom: 22px;
+        }
+
+        .tab-btn {
+
+            border: none;
+
+            background: transparent;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            cursor: pointer;
+
+            color: #64748b;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .tab-btn.active {
+
+            background: #ffffff;
+
+            color: #4277e8;
+
+            box-shadow:
+                0 2px 8px rgba(15, 23, 42, 0.06);
+        }
+
+        /* =========================================================
+           ALERT / MESSAGE
+           ========================================================= */
+
+        .message {
+
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            border: 1px solid transparent;
+
+            font-size: 14px;
+
+            line-height: 1.45;
+        }
+
+        .message.error {
+
+            display: block;
+
+            background: #fff1f1;
+
+            border-color: #ffd2d2;
+
+            color: #c53030;
+        }
+
+        .message.success {
+
+            display: block;
+
+            background: #effcf4;
+
+            border-color: #ccefd9;
+
+            color: #19713d;
+        }
+
+        .message.otp {
+
+            display: block;
+
+            background: #eef5ff;
+
+            border-color: #d4e4ff;
+
+            color: #245bb0;
+
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           FORM
+           ========================================================= */
+
+        .account-form {
+            display: none;
+        }
+
+        .account-form.active {
+            display: block;
+        }
+
+        .field {
+
+            margin-bottom: 20px;
+        }
+
+        .field label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #111827;
+
+            margin-bottom: 9px;
+        }
+
+        .input-row {
+
+            display: grid;
+
+            grid-template-columns: 1fr auto;
+
+            gap: 10px;
+        }
+
+        input {
+
+            width: 100%;
+
+            height: 56px;
+
+            border: 1px solid #d9e1eb;
+
+            border-radius: 12px;
+
+            padding: 0 16px;
+
+            outline: none;
+
+            font-size: 16px;
+
+            color: #111827;
+
+            background: #ffffff;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        input:focus {
+
+            border-color: #7aaaf4;
+
+            box-shadow:
+                0 0 0 4px rgba(82, 135, 232, 0.10);
+        }
+
+        input::placeholder {
+            color: #8a96a8;
+        }
+
+        .otp-btn {
+
+            height: 56px;
+
+            padding: 0 24px;
+
+            border-radius: 12px;
+
+            border: 1px solid #bed5ff;
+
+            background: #ffffff;
+
+            color: #4277e8;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+        .otp-btn:hover {
+
+            background: #f5f9ff;
+
+            border-color: #91b7fa;
+        }
+
+        .otp-btn:disabled {
+
+            opacity: 0.55;
+
+            cursor: not-allowed;
+        }
+
+        .password-wrapper {
+
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 52px;
+        }
+
+        .show-password {
+
+            position: absolute;
+
+            right: 14px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            color: #718096;
+
+            font-size: 18px;
+        }
+
+        .terms {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin: 8px 0 22px;
+
+            color: #687386;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .terms input {
+
+            width: 17px;
+
+            height: 17px;
+
+            min-width: 17px;
+
+            margin-top: 2px;
+        }
+
+        .terms a {
+
+            color: #4277e8;
+
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .primary-btn {
+
+            width: 100%;
+
+            height: 56px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4e80ec,
+                    #3b6fdd
+                );
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px rgba(63, 111, 220, 0.22);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .primary-btn:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 26px rgba(63, 111, 220, 0.28);
+        }
+
+        .primary-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        .footer-note {
+
+            text-align: center;
+
+            color: #7b8797;
+
+            font-size: 14px;
+
+            margin-top: 20px;
+        }
+
+        .footer-note a {
+
+            color: #4277e8;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        /* =========================================================
+           SELLER EXTRA NOTE
+           ========================================================= */
+
+        .info-box {
+
+            margin-bottom: 22px;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            background: #f5f9ff;
+
+            border: 1px solid #dce9ff;
+
+            color: #4c6381;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 1050px) {
+
+            body {
+                padding: 16px;
+            }
+
+            .register-card {
+
+                grid-template-columns: 1fr;
+
+                min-height: auto;
+            }
+
+            .brand-panel {
+
+                min-height: 420px;
+
+                padding: 38px;
+            }
+
+            .brand-copy {
+                margin-top: 55px;
+            }
+
+            .brand-copy h1 {
+                font-size: 54px;
+            }
+
+            .robot-area {
+
+                left: 25px;
+
+                bottom: 0;
+
+                transform: scale(0.82);
+
+                transform-origin: bottom left;
+            }
+
+            .form-panel {
+
+                max-height: none;
+
+                padding: 34px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 0;
+            }
+
+            .register-card {
+                border-radius: 0;
+                border: none;
+            }
+
+            .brand-panel {
+
+                min-height: 360px;
+
+                padding: 30px 24px;
+            }
+
+            .brand-logo {
+                font-size: 28px;
+            }
+
+            .brand-copy {
+                margin-top: 45px;
+            }
+
+            .brand-copy h1 {
+                font-size: 44px;
+                letter-spacing: -2px;
+            }
+
+            .brand-copy p {
+                font-size: 16px;
+            }
+
+            .robot-area {
+                display: none;
+            }
+
+            .form-panel {
+                padding: 28px 20px 38px;
+            }
+
+            .form-heading h2 {
+                font-size: 38px;
+            }
+
+            .form-heading p {
+                font-size: 16px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .otp-btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="register-card">
+
+    <!-- =========================================================
+         LEFT BRAND PANEL
+         ========================================================= -->
+
+    <section class="brand-panel">
+
+        <div>
+            <div class="brand-logo">
+                Queue<span>Bot</span>
+            </div>
+
+            <div class="brand-tagline">
+                SUPPORT MADE SIMPLE
+            </div>
+        </div>
+
+
+        <div class="brand-copy">
+
+            <h1>
+                One account.<br>
+                <span>Smarter support.</span>
+            </h1>
+
+            <p>
+                Keep your orders connected and get help whenever
+                you need it.
+            </p>
+
+        </div>
+
+
+        <div class="robot-area">
+
+            <img
+                    src="/queuebot.png"
+                    alt="QueueBot"
+                    class="robot"
+                    onerror="this.style.display='none';"
+            >
+
+            <div class="speech-bubble">
+
+                Let’s get<br>
+                you started!
+
+                <div class="speech-line"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         RIGHT FORM PANEL
+         ========================================================= -->
+
+    <section class="form-panel">
+
+        <div class="top-row">
+
+            <a
+                    href="/login.html"
+                    class="back-link">
+
+                ← Back to Sign In
+
+            </a>
+
+        </div>
+
+
+        <div class="form-heading">
+
+            <h2>
+                Create your account
+            </h2>
+
+            <p>
+                Choose how you want to use QueueBot
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             TABS
+             ===================================================== -->
+
+        <div class="tabs">
+
+            <button
+                    type="button"
+                    class="tab-btn active"
+                    id="customerTab"
+                    onclick="switchTab('customer')">
+
+                Customer
+
+            </button>
+
+            <button
+                    type="button"
+                    class="tab-btn"
+                    id="sellerTab"
+                    onclick="switchTab('seller')">
+
+                Seller
+
+            </button>
+
+        </div>
+
+
+        <!-- =====================================================
+             MESSAGE
+             ===================================================== -->
+
+        <div
+                id="message"
+                class="message">
+        </div>
+
+
+        <!-- =====================================================
+             CUSTOMER FORM
+             ===================================================== -->
+
+        <form
+                id="customerForm"
+                class="account-form active"
+                onsubmit="registerCustomer(event)">
+
+            <div class="field">
+
+                <label for="customerPhoneOrEmail">
+                    Phone or Email
+                </label>
+
+                <div class="input-row">
+
+                    <input
+                            type="text"
+                            id="customerPhoneOrEmail"
+                            placeholder="Enter phone number or email"
+                            autocomplete="email"
+                    >
+
+                    <button
+                            type="button"
+                            class="otp-btn"
+                            id="customerOtpButton"
+                            onclick="sendCustomerOtp()">
+
+                        Send OTP
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="customerOtp">
+                    Verification Code
+                </label>
+
+                <input
+                        type="text"
+                        id="customerOtp"
+                        inputmode="numeric"
+                        maxlength="6"
+                        placeholder="Enter 6-digit OTP"
+                        autocomplete="one-time-code"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="customerPassword">
+                    Create Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                            type="password"
+                            id="customerPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                    >
+
+                    <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('customerPassword', this)">
+
+                        ◉
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="customerConfirmPassword">
+                    Confirm Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                            type="password"
+                            id="customerConfirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                    >
+
+                    <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('customerConfirmPassword', this)">
+
+                        ◉
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <label class="terms">
+
+                <input
+                        type="checkbox"
+                        id="customerTerms"
+                >
+
+                <span>
+                    I agree to the
+                    <a href="#" onclick="return false;">
+                        Terms of Service
+                    </a>
+                    and
+                    <a href="#" onclick="return false;">
+                        Privacy Policy
+                    </a>.
+                </span>
+
+            </label>
+
+
+            <button
+                    type="submit"
+                    class="primary-btn"
+                    id="customerRegisterButton">
+
+                Create Customer Account
+
+            </button>
+
+
+            <div class="footer-note">
+
+                Already have an account?
+                <a href="/login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+        </form>
+
+
+        <!-- =====================================================
+             SELLER FORM
+             ===================================================== -->
+
+        <form
+                id="sellerForm"
+                class="account-form"
+                onsubmit="registerSeller(event)">
+
+            <div class="info-box">
+
+                Seller accounts receive a unique Seller ID
+                automatically after registration.
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="businessName">
+                    Business Name
+                </label>
+
+                <input
+                        type="text"
+                        id="businessName"
+                        placeholder="Enter business name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="ownerName">
+                    Owner / Contact Name
+                </label>
+
+                <input
+                        type="text"
+                        id="ownerName"
+                        placeholder="Enter owner or contact name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sellerPhone">
+                    Phone Number
+                </label>
+
+                <div class="input-row">
+
+                    <input
+                            type="tel"
+                            id="sellerPhone"
+                            placeholder="Enter phone number"
+                            autocomplete="tel"
+                    >
+
+                    <button
+                            type="button"
+                            class="otp-btn"
+                            id="sellerOtpButton"
+                            onclick="sendSellerOtp()">
+
+                        Send OTP
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sellerOtp">
+                    Seller Verification Code
+                </label>
+
+                <input
+                        type="text"
+                        id="sellerOtp"
+                        inputmode="numeric"
+                        maxlength="6"
+                        placeholder="Enter 6-digit OTP"
+                        autocomplete="one-time-code"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sellerEmail">
+                    Email
+                </label>
+
+                <input
+                        type="email"
+                        id="sellerEmail"
+                        placeholder="Enter business email"
+                        autocomplete="email"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sellerPassword">
+                    Create Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                            type="password"
+                            id="sellerPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                    >
+
+                    <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('sellerPassword', this)">
+
+                        ◉
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sellerConfirmPassword">
+                    Confirm Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                            type="password"
+                            id="sellerConfirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                    >
+
+                    <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('sellerConfirmPassword', this)">
+
+                        ◉
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <label class="terms">
+
+                <input
+                        type="checkbox"
+                        id="sellerTerms"
+                >
+
+                <span>
+                    I agree to the
+                    <a href="#" onclick="return false;">
+                        Terms of Service
+                    </a>
+                    and
+                    <a href="#" onclick="return false;">
+                        Privacy Policy
+                    </a>.
+                </span>
+
+            </label>
+
+
+            <button
+                    type="submit"
+                    class="primary-btn"
+                    id="sellerRegisterButton">
+
+                Create Seller Account
+
+            </button>
+
+
+            <div class="footer-note">
+
+                Already have an account?
+                <a href="/login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    // ============================================================
+    // GLOBAL HELPERS
+    // ============================================================
+
+    function isEmail(value) {
+
+        return value.includes("@");
+    }
+
+
+    function showMessage(
+            message,
+            type = "error"
+    ) {
+
+        const box =
+                document.getElementById("message");
+
+        box.textContent = message;
+
+        box.className =
+                "message " + type;
+
+        box.style.display = "block";
+    }
+
+
+    function clearMessage() {
+
+        const box =
+                document.getElementById("message");
+
+        box.textContent = "";
+
+        box.className = "message";
+
+        box.style.display = "none";
+    }
+
+
+    function togglePassword(
+            inputId,
+            button
+    ) {
+
+        const input =
+                document.getElementById(inputId);
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            button.textContent = "◉";
+
+        } else {
+
+            input.type = "password";
+
+            button.textContent = "◉";
+        }
+    }
+
+
+    // ============================================================
+    // TAB SWITCH
+    // ============================================================
+
+    function switchTab(tab) {
+
+        clearMessage();
+
+        const customerTab =
+                document.getElementById(
+                        "customerTab"
+                );
+
+        const sellerTab =
+                document.getElementById(
+                        "sellerTab"
+                );
+
+        const customerForm =
+                document.getElementById(
+                        "customerForm"
+                );
+
+        const sellerForm =
+                document.getElementById(
+                        "sellerForm"
+                );
+
+
+        if (tab === "customer") {
+
+            customerTab.classList.add("active");
+
+            sellerTab.classList.remove("active");
+
+            customerForm.classList.add("active");
+
+            sellerForm.classList.remove("active");
+
+        } else {
+
+            sellerTab.classList.add("active");
+
+            customerTab.classList.remove("active");
+
+            sellerForm.classList.add("active");
+
+            customerForm.classList.remove("active");
+        }
+    }
+
+
+    // ============================================================
+    // CUSTOMER SEND OTP
+    // ============================================================
+
+    async function sendCustomerOtp() {
+
+        clearMessage();
+
+        const input =
+                document.getElementById(
+                        "customerPhoneOrEmail"
+                );
+
+        const button =
+                document.getElementById(
+                        "customerOtpButton"
+                );
+
+        const value =
+                input.value.trim();
+
+
+        // --------------------------------------------------------
+        // Local validation
+        // --------------------------------------------------------
+
+        if (!value) {
+
+            showMessage(
+                    "Phone or Email is required.",
+                    "error"
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        // --------------------------------------------------------
+        // Prepare EXACT backend payload
+        // --------------------------------------------------------
+
+        const payload = {
+
+            phone:
+                    isEmail(value)
+                            ? ""
+                            : value,
+
+            email:
+                    isEmail(value)
+                            ? value
+                            : ""
+        };
+
+
+        console.log(
+                "Customer OTP request:",
+                payload
+        );
+
+
+        button.disabled = true;
+
+        button.textContent = "Sending...";
+
+
+        try {
+
+            const response =
+                    await fetch(
+                            "/auth/customer/send-otp",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                            "application/json"
+                                },
+
+                                body:
+                                        JSON.stringify(
+                                                payload
+                                        )
+                            }
+                    );
+
+
+            const data =
+                    await response.json();
+
+
+            if (!response.ok ||
+                    !data.success) {
+
+                throw new Error(
+                        data.message ||
+                        "Unable to send OTP."
+                );
+            }
+
+
+            // ----------------------------------------------------
+            // Demo OTP
+            // Backend currently returns OTP directly.
+            // ----------------------------------------------------
+
+            if (data.otp) {
+
+                showMessage(
+                        "OTP generated successfully. OTP: " +
+                        data.otp,
+                        "otp"
+                );
+
+            } else {
+
+                showMessage(
+                        "OTP sent successfully.",
+                        "success"
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                    "Customer OTP error:",
+                    error
+            );
+
+            showMessage(
+                    error.message ||
+                    "Unable to send OTP.",
+                    "error"
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent = "Send OTP";
+        }
+    }
+
+
+    // ============================================================
+    // CUSTOMER REGISTER
+    // ============================================================
+
+    async function registerCustomer(event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const identifier =
+                document
+                        .getElementById(
+                                "customerPhoneOrEmail"
+                        )
+                        .value
+                        .trim();
+
+        const otp =
+                document
+                        .getElementById(
+                                "customerOtp"
+                        )
+                        .value
+                        .trim();
+
+        const password =
+                document
+                        .getElementById(
+                                "customerPassword"
+                        )
+                        .value;
+
+        const confirmPassword =
+                document
+                        .getElementById(
+                                "customerConfirmPassword"
+                        )
+                        .value;
+
+        const terms =
+                document
+                        .getElementById(
+                                "customerTerms"
+                        )
+                        .checked;
+
+        const button =
+                document
+                        .getElementById(
+                                "customerRegisterButton"
+                        );
+
+
+        // --------------------------------------------------------
+        // Validation
+        // --------------------------------------------------------
+
+        if (!identifier) {
+
+            showMessage(
+                    "Phone or Email is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!otp) {
+
+            showMessage(
+                    "Please enter the 6-digit OTP.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!/^\d{6}$/.test(otp)) {
+
+            showMessage(
+                    "OTP must contain exactly 6 digits.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!password) {
+
+            showMessage(
+                    "Password is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (password.length < 6) {
+
+            showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                    "Passwords do not match.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!terms) {
+
+            showMessage(
+                    "Please accept the Terms of Service and Privacy Policy.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        const payload = {
+
+            /*
+             * Name is optional because the seller/admin
+             * already created the customer record.
+             */
+
+            name: "",
+
+            phone:
+                    isEmail(identifier)
+                            ? ""
+                            : identifier,
+
+            email:
+                    isEmail(identifier)
+                            ? identifier
+                            : "",
+
+            otp: otp,
+
+            password: password,
+
+            /*
+             * Customer does not need to enter Seller ID.
+             */
+
+            sellerId: null
+        };
+
+
+        console.log(
+                "Customer registration request:",
+                payload
+        );
+
+
+        button.disabled = true;
+
+        button.textContent = "Creating Account...";
+
+
+        try {
+
+            const response =
+                    await fetch(
+                            "/auth/customer/register",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                            "application/json"
+                                },
+
+                                body:
+                                        JSON.stringify(
+                                                payload
+                                        )
+                            }
+                    );
+
+
+            const data =
+                    await response.json();
+
+
+            if (!response.ok ||
+                    !data.success) {
+
+                throw new Error(
+                        data.message ||
+                        "Could not create customer account."
+                );
+            }
+
+
+            showMessage(
+                    "Customer account created successfully. Customer ID: " +
+                    (data.customerId || "Generated"),
+                    "success"
+            );
+
+
+            // ----------------------------------------------------
+            // Go to login after a short delay
+            // ----------------------------------------------------
+
+            setTimeout(
+                    function () {
+
+                        window.location.href =
+                                "/login.html";
+
+                    },
+                    1600
+            );
+
+        } catch (error) {
+
+            console.error(
+                    "Customer registration error:",
+                    error
+            );
+
+            showMessage(
+                    error.message ||
+                    "Could not create customer account.",
+                    "error"
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                    "Create Customer Account";
+        }
+    }
+
+
+    // ============================================================
+    // SELLER SEND OTP
+    // ============================================================
+
+    async function sendSellerOtp() {
+
+        clearMessage();
+
+        const input =
+                document.getElementById(
+                        "sellerPhone"
+                );
+
+        const button =
+                document.getElementById(
+                        "sellerOtpButton"
+                );
+
+        const phone =
+                input.value.trim();
+
+
+        if (!phone) {
+
+            showMessage(
+                    "Seller phone number is required.",
+                    "error"
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        const payload = {
+            phone: phone
+        };
+
+
+        console.log(
+                "Seller OTP request:",
+                payload
+        );
+
+
+        button.disabled = true;
+
+        button.textContent = "Sending...";
+
+
+        try {
+
+            const response =
+                    await fetch(
+                            "/auth/seller/send-otp",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                            "application/json"
+                                },
+
+                                body:
+                                        JSON.stringify(
+                                                payload
+                                        )
+                            }
+                    );
+
+
+            const data =
+                    await response.json();
+
+
+            if (!response.ok ||
+                    !data.success) {
+
+                throw new Error(
+                        data.message ||
+                        "Unable to send seller OTP."
+                );
+            }
+
+
+            if (data.otp) {
+
+                showMessage(
+                        "Seller OTP generated successfully. OTP: " +
+                        data.otp,
+                        "otp"
+                );
+
+            } else {
+
+                showMessage(
+                        "Seller OTP sent successfully.",
+                        "success"
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                    "Seller OTP error:",
+                    error
+            );
+
+            showMessage(
+                    error.message ||
+                    "Unable to send seller OTP.",
+                    "error"
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent = "Send OTP";
+        }
+    }
+
+
+    // ============================================================
+    // SELLER REGISTER
+    // ============================================================
+
+    async function registerSeller(event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const businessName =
+                document
+                        .getElementById(
+                                "businessName"
+                        )
+                        .value
+                        .trim();
+
+        const ownerName =
+                document
+                        .getElementById(
+                                "ownerName"
+                        )
+                        .value
+                        .trim();
+
+        const phone =
+                document
+                        .getElementById(
+                                "sellerPhone"
+                        )
+                        .value
+                        .trim();
+
+        const otp =
+                document
+                        .getElementById(
+                                "sellerOtp"
+                        )
+                        .value
+                        .trim();
+
+        const email =
+                document
+                        .getElementById(
+                                "sellerEmail"
+                        )
+                        .value
+                        .trim();
+
+        const password =
+                document
+                        .getElementById(
+                                "sellerPassword"
+                        )
+                        .value;
+
+        const confirmPassword =
+                document
+                        .getElementById(
+                                "sellerConfirmPassword"
+                        )
+                        .value;
+
+        const terms =
+                document
+                        .getElementById(
+                                "sellerTerms"
+                        )
+                        .checked;
+
+        const button =
+                document
+                        .getElementById(
+                                "sellerRegisterButton"
+                        );
+
+
+        if (!businessName) {
+
+            showMessage(
+                    "Business name is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!ownerName) {
+
+            showMessage(
+                    "Owner / Contact Name is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!phone) {
+
+            showMessage(
+                    "Seller phone number is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!otp) {
+
+            showMessage(
+                    "Seller OTP is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!/^\d{6}$/.test(otp)) {
+
+            showMessage(
+                    "Seller OTP must contain exactly 6 digits.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!email) {
+
+            showMessage(
+                    "Seller email is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!password) {
+
+            showMessage(
+                    "Password is required.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (password.length < 6) {
+
+            showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                    "Passwords do not match.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        if (!terms) {
+
+            showMessage(
+                    "Please accept the Terms of Service and Privacy Policy.",
+                    "error"
+            );
+
+            return;
+        }
+
+
+        const payload = {
+
+            businessName:
+                    businessName,
+
+            ownerName:
+                    ownerName,
+
+            phone:
+                    phone,
+
+            email:
+                    email,
+
+            otp:
+                    otp,
+
+            password:
+                    password
+        };
+
+
+        console.log(
+                "Seller registration request:",
+                payload
+        );
+
+
+        button.disabled = true;
+
+        button.textContent =
+                "Creating Account...";
+
+
+        try {
+
+            const response =
+                    await fetch(
+                            "/auth/seller/register",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                            "application/json"
+                                },
+
+                                body:
+                                        JSON.stringify(
+                                                payload
+                                        )
+                            }
+                    );
+
+
+            const data =
+                    await response.json();
+
+
+            if (!response.ok ||
+                    !data.success) {
+
+                throw new Error(
+                        data.message ||
+                        "Could not create seller account."
+                );
+            }
+
+
+            showMessage(
+                    "Seller account created successfully. Seller ID: " +
+                    (data.sellerId || "Generated"),
+                    "success"
+            );
+
+
+            setTimeout(
+                    function () {
+
+                        window.location.href =
+                                "/login.html";
+
+                    },
+                    1800
+            );
+
+        } catch (error) {
+
+            console.error(
+                    "Seller registration error:",
+                    error
+            );
+
+            showMessage(
+                    error.message ||
+                    "Could not create seller account.",
+                    "error"
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                    "Create Seller Account";
+        }
+    }
+
+
+    // ============================================================
+    // PAGE LOAD
+    // ============================================================
+
+    document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                switchTab("customer");
+
+            }
+    );
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,4360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>QueueBot | My Orders</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                #f5f7fb;
+
+            color:
+                #172033;
+
+            min-height:
+                100vh;
+        }
+
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+
+        button {
+            cursor:
+                pointer;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .topbar {
+            height:
+                82px;
+
+            background:
+                white;
+
+            border-bottom:
+                1px solid #e7ecf2;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                0 48px;
+
+            position:
+                sticky;
+
+            top:
+                0;
+
+            z-index:
+                1000;
+        }
+
+
+        .brand {
+            font-size:
+                29px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -1.2px;
+
+            color:
+                #172033;
+        }
+
+
+        .brand span {
+            color:
+                #4ca3da;
+        }
+
+
+        .brand-subtitle {
+            margin-top:
+                4px;
+
+            color:
+                #90a0b6;
+
+            font-size:
+                8px;
+
+            letter-spacing:
+                3.6px;
+        }
+
+
+        .top-actions {
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+        }
+
+
+        .seller-pill {
+            padding:
+                10px 16px;
+
+            border-radius:
+                24px;
+
+            background:
+                #eef6ff;
+
+            color:
+                #4077bd;
+
+            border:
+                1px solid #d8e8fa;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        .logout-btn {
+            padding:
+                10px 17px;
+
+            border:
+                none;
+
+            border-radius:
+                10px;
+
+            background:
+                #f1f4f8;
+
+            color:
+                #657389;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .page {
+            width:
+                min(1120px, calc(100% - 36px));
+
+            margin:
+                30px auto 60px;
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ====================================================== */
+
+        .welcome {
+            position:
+                relative;
+
+            height:
+                230px;
+
+            border-radius:
+                25px;
+
+            overflow:
+                hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #182f52,
+                    #0d2140
+                );
+
+            padding:
+                36px 38px;
+
+            color:
+                white;
+        }
+
+
+        .welcome::after {
+            content:
+                "";
+
+            position:
+                absolute;
+
+            right:
+                -80px;
+
+            bottom:
+                -100px;
+
+            width:
+                360px;
+
+            height:
+                260px;
+
+            border-radius:
+                50%;
+
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(71,171,240,.20),
+                    transparent 66%
+                );
+        }
+
+
+        .welcome-content {
+            position:
+                relative;
+
+            z-index:
+                2;
+        }
+
+
+        .welcome-eyebrow {
+            font-size:
+                11px;
+
+            letter-spacing:
+                2px;
+
+            color:
+                #91bde4;
+
+            margin-bottom:
+                9px;
+
+            font-weight:
+                700;
+        }
+
+
+        .welcome h1 {
+            font-size:
+                42px;
+
+            line-height:
+                1.05;
+
+            letter-spacing:
+                -1.8px;
+
+            font-weight:
+                800;
+        }
+
+
+        .welcome p {
+            margin-top:
+                13px;
+
+            color:
+                #d6e7f8;
+
+            font-size:
+                15px;
+
+            max-width:
+                590px;
+
+            line-height:
+                1.55;
+        }
+
+
+        .customer-badge {
+            margin-top:
+                22px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            padding:
+                9px 13px;
+
+            border-radius:
+                18px;
+
+            background:
+                rgba(255,255,255,.08);
+
+            border:
+                1px solid rgba(255,255,255,.12);
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary-grid {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap:
+                16px;
+
+            margin-top:
+                18px;
+        }
+
+
+        .summary-card {
+            background:
+                white;
+
+            border:
+                1px solid #e5ebf2;
+
+            border-radius:
+                18px;
+
+            padding:
+                20px;
+
+            box-shadow:
+                0 8px 24px rgba(24,39,75,.04);
+        }
+
+
+        .summary-label {
+            color:
+                #8b98aa;
+
+            font-size:
+                11px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                1.2px;
+
+            font-weight:
+                700;
+        }
+
+
+        .summary-value {
+            font-size:
+                28px;
+
+            font-weight:
+                800;
+
+            color:
+                #172033;
+
+            margin-top:
+                7px;
+        }
+
+
+        .summary-help {
+            margin-top:
+                6px;
+
+            color:
+                #94a0b0;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =====================================================
+           SECTION CARD
+        ====================================================== */
+
+        .section-card {
+            margin-top:
+                18px;
+
+            background:
+                white;
+
+            border:
+                1px solid #e5ebf2;
+
+            border-radius:
+                20px;
+
+            padding:
+                24px;
+
+            box-shadow:
+                0 8px 24px rgba(24,39,75,.04);
+        }
+
+
+        .section-header {
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                18px;
+        }
+
+
+        .eyebrow {
+            font-size:
+                10px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                2px;
+
+            color:
+                #79a8d7;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                6px;
+        }
+
+
+        .section-header h2 {
+            font-size:
+                26px;
+
+            color:
+                #172033;
+
+            letter-spacing:
+                -.6px;
+        }
+
+
+        .section-header p {
+            margin-top:
+                5px;
+
+            color:
+                #8c98a8;
+
+            font-size:
+                13px;
+        }
+
+
+        /* =====================================================
+           ORDERS
+        ====================================================== */
+
+        .orders-grid {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(
+                        300px,
+                        1fr
+                    )
+                );
+
+            gap:
+                16px;
+        }
+
+
+        .order-card {
+            border:
+                1px solid #e7edf4;
+
+            border-radius:
+                16px;
+
+            padding:
+                18px;
+
+            background:
+                #fcfdff;
+
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                border-color .18s ease;
+        }
+
+
+        .order-card:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 24px rgba(30,49,82,.07);
+
+            border-color:
+                #d7e5f4;
+        }
+
+
+        .order-top {
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap:
+                12px;
+        }
+
+
+        .order-id {
+            color:
+                #3f76b7;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .4px;
+        }
+
+
+        .order-status {
+            padding:
+                6px 9px;
+
+            border-radius:
+                12px;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            background:
+                #eef6ff;
+
+            color:
+                #4077bd;
+        }
+
+
+        .order-product {
+            margin-top:
+                14px;
+
+            font-size:
+                17px;
+
+            font-weight:
+                800;
+
+            color:
+                #172033;
+        }
+
+
+        .order-meta {
+            margin-top:
+                8px;
+
+            color:
+                #8290a3;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.6;
+        }
+
+
+        .order-bottom {
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-top:
+                15px;
+
+            padding-top:
+                14px;
+
+            border-top:
+                1px solid #edf1f5;
+        }
+
+
+        .order-amount {
+            font-size:
+                17px;
+
+            font-weight:
+                800;
+
+            color:
+                #192033;
+        }
+
+
+        .order-date {
+            font-size:
+                11px;
+
+            color:
+                #8c98a7;
+        }
+
+
+        .order-actions {
+            margin-top:
+                14px;
+
+            display:
+                flex;
+
+            gap:
+                9px;
+        }
+
+
+        .order-btn {
+            border:
+                1px solid #dce5ef;
+
+            background:
+                white;
+
+            color:
+                #4b6380;
+
+            border-radius:
+                10px;
+
+            padding:
+                9px 12px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        .order-btn.primary {
+            background:
+                #eef6ff;
+
+            color:
+                #4077bd;
+
+            border-color:
+                #d5e6fa;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
+
+        .empty {
+            padding:
+                48px 24px;
+
+            border:
+                1px dashed #dbe4ee;
+
+            border-radius:
+                16px;
+
+            text-align:
+                center;
+
+            color:
+                #8491a1;
+
+            font-size:
+                14px;
+
+            background:
+                #fbfcfe;
+        }
+
+
+        .loading {
+            color:
+                #7c8ca1;
+        }
+
+
+        /* =====================================================
+           SUPPORT TICKETS
+        ====================================================== */
+
+        .tickets-list {
+            display:
+                grid;
+
+            gap:
+                13px;
+        }
+
+
+        .ticket-card {
+            border:
+                1px solid #e5ebf2;
+
+            border-radius:
+                16px;
+
+            background:
+                #fcfdff;
+
+            padding:
+                17px;
+
+            transition:
+                box-shadow .18s ease,
+                transform .18s ease;
+        }
+
+
+        .ticket-card:hover {
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 8px 20px rgba(30,49,82,.06);
+        }
+
+
+        .ticket-top {
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap:
+                15px;
+        }
+
+
+        .ticket-title {
+            font-size:
+                15px;
+
+            color:
+                #172033;
+
+            font-weight:
+                800;
+        }
+
+
+        .ticket-id {
+            margin-top:
+                5px;
+
+            font-size:
+                11px;
+
+            color:
+                #91a0b2;
+        }
+
+
+        .ticket-badges {
+            display:
+                flex;
+
+            gap:
+                7px;
+
+            flex-wrap:
+                wrap;
+
+            justify-content:
+                flex-end;
+        }
+
+
+        .badge {
+            padding:
+                6px 9px;
+
+            border-radius:
+                12px;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            background:
+                #f1f5f9;
+
+            color:
+                #64748b;
+        }
+
+
+        .badge.critical {
+            background:
+                #fff0f0;
+
+            color:
+                #c53030;
+        }
+
+
+        .badge.high {
+            background:
+                #fff7ea;
+
+            color:
+                #b7791f;
+        }
+
+
+        .badge.medium {
+            background:
+                #eef6ff;
+
+            color:
+                #4077bd;
+        }
+
+
+        .badge.low {
+            background:
+                #f2f4f7;
+
+            color:
+                #718096;
+        }
+
+
+        .ticket-description {
+            margin-top:
+                12px;
+
+            color:
+                #5f6e81;
+
+            line-height:
+                1.55;
+
+            font-size:
+                13px;
+        }
+
+
+        .ticket-details {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                10px;
+
+            margin-top:
+                14px;
+        }
+
+
+        .ticket-detail-item {
+            padding:
+                11px;
+
+            border-radius:
+                12px;
+
+            background:
+                #f8fafc;
+        }
+
+
+        .ticket-detail-item span {
+            display:
+                block;
+
+            font-size:
+                10px;
+
+            color:
+                #8e9bab;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .9px;
+        }
+
+
+        .ticket-detail-item strong {
+            display:
+                block;
+
+            margin-top:
+                4px;
+
+            font-size:
+                12px;
+
+            color:
+                #26344b;
+        }
+
+
+        .ticket-response {
+            margin-top:
+                13px;
+
+            border-left:
+                3px solid #78afe0;
+
+            background:
+                #f5faff;
+
+            padding:
+                11px 13px;
+
+            color:
+                #53647a;
+
+            border-radius:
+                0 10px 10px 0;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.55;
+        }
+
+
+        .ticket-actions {
+            margin-top:
+                14px;
+
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            gap:
+                9px;
+        }
+
+
+        .ticket-action-btn {
+            padding:
+                9px 12px;
+
+            border:
+                1px solid #dbe4ee;
+
+            background:
+                white;
+
+            border-radius:
+                10px;
+
+            color:
+                #4f647f;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+        }
+
+
+        .ticket-action-btn.primary {
+            background:
+                #eef6ff;
+
+            color:
+                #4077bd;
+
+            border-color:
+                #d7e6f7;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ====================================================== */
+
+        .modal-overlay {
+            position:
+                fixed;
+
+            inset:
+                0;
+
+            background:
+                rgba(8,19,36,.52);
+
+            display:
+                none;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                18px;
+
+            z-index:
+                5000;
+        }
+
+
+        .modal-overlay.visible {
+            display:
+                flex;
+        }
+
+
+        .modal {
+            width:
+                min(
+                    760px,
+                    100%
+                );
+
+            max-height:
+                90vh;
+
+            overflow:
+                auto;
+
+            background:
+                white;
+
+            border-radius:
+                20px;
+
+            box-shadow:
+                0 30px 80px rgba(8,20,40,.24);
+
+            padding:
+                24px;
+        }
+
+
+        .modal-header {
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .modal-header h2 {
+            font-size:
+                25px;
+        }
+
+
+        .modal-close {
+            width:
+                38px;
+
+            height:
+                38px;
+
+            border:
+                none;
+
+            border-radius:
+                50%;
+
+            background:
+                #f3f6fa;
+
+            color:
+                #65758a;
+
+            font-size:
+                20px;
+        }
+
+
+        /* =====================================================
+           ISSUE FORM
+        ====================================================== */
+
+        .issue-form {
+            display:
+                grid;
+
+            gap:
+                16px;
+        }
+
+
+        .issue-form label {
+            display:
+                block;
+
+            margin-bottom:
+                8px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            color:
+                #25344b;
+        }
+
+
+        .issue-form input,
+        .issue-form select,
+        .issue-form textarea {
+            width:
+                100%;
+
+            border:
+                1px solid #dce4ed;
+
+            border-radius:
+                11px;
+
+            padding:
+                12px 13px;
+
+            outline:
+                none;
+
+            background:
+                #fff;
+
+            color:
+                #172033;
+
+            font-size:
+                13px;
+        }
+
+
+        .issue-form textarea {
+            resize:
+                vertical;
+
+            min-height:
+                135px;
+        }
+
+
+        .issue-form input:focus,
+        .issue-form select:focus,
+        .issue-form textarea:focus {
+            border-color:
+                #85b4e0;
+
+            box-shadow:
+                0 0 0 3px rgba(68,137,205,.10);
+        }
+
+
+        .selected-order-box {
+            border:
+                1px solid #dceaf8;
+
+            background:
+                #f6fbff;
+
+            border-radius:
+                13px;
+
+            padding:
+                13px;
+
+            color:
+                #4d6480;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.55;
+        }
+
+
+        .file-upload {
+            border:
+                1px dashed #c7d6e5;
+
+            border-radius:
+                12px;
+
+            background:
+                #fbfdff;
+
+            padding:
+                14px;
+        }
+
+
+        .file-upload input {
+            border:
+                none;
+
+            padding:
+                0;
+
+            background:
+                transparent;
+        }
+
+
+        .issue-footer {
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            gap:
+                9px;
+
+            margin-top:
+                4px;
+        }
+
+
+        .issue-btn {
+            min-width:
+                125px;
+
+            padding:
+                11px 16px;
+
+            border-radius:
+                11px;
+
+            border:
+                1px solid #dbe4ee;
+
+            background:
+                white;
+
+            color:
+                #55677f;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+        }
+
+
+        .issue-btn.primary {
+            border:
+                none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4e80ec,
+                    #3b6fdd
+                );
+
+            color:
+                white;
+        }
+
+
+        .issue-btn:disabled {
+            opacity:
+                .6;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ====================================================== */
+
+        .toast {
+            position:
+                fixed;
+
+            right:
+                22px;
+
+            bottom:
+                22px;
+
+            max-width:
+                360px;
+
+            padding:
+                13px 15px;
+
+            border-radius:
+                12px;
+
+            background:
+                #1f2d42;
+
+            color:
+                white;
+
+            box-shadow:
+                0 18px 38px rgba(11,23,41,.22);
+
+            display:
+                none;
+
+            z-index:
+                7000;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .toast.visible {
+            display:
+                block;
+        }
+
+
+        .toast.success {
+            background:
+                #216a48;
+        }
+
+
+        .toast.error {
+            background:
+                #a73f3f;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            .topbar {
+                padding:
+                    0 22px;
+            }
+
+            .page {
+                width:
+                    min(
+                        100% - 22px,
+                        1120px
+                    );
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(
+                        3,
+                        1fr
+                    );
+            }
+
+            .ticket-details {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                height:
+                    72px;
+
+                padding:
+                    0 15px;
+            }
+
+            .brand {
+                font-size:
+                    24px;
+            }
+
+            .brand-subtitle {
+                display:
+                    none;
+            }
+
+            .seller-pill {
+                display:
+                    none;
+            }
+
+            .page {
+                width:
+                    calc(
+                        100% - 14px
+                    );
+
+                margin-top:
+                    14px;
+            }
+
+            .welcome {
+                height:
+                    auto;
+
+                min-height:
+                    230px;
+
+                padding:
+                    27px 23px;
+            }
+
+            .welcome h1 {
+                font-size:
+                    34px;
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .orders-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .ticket-top {
+                flex-direction:
+                    column;
+            }
+
+            .ticket-badges {
+                justify-content:
+                    flex-start;
+            }
+
+            .ticket-details {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .section-card {
+                padding:
+                    18px;
+            }
+
+            .top-actions {
+                gap:
+                    7px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <div>
+
+        <div class="brand">
+            Queue<span>Bot</span>
+        </div>
+
+        <div class="brand-subtitle">
+            CUSTOMER SUPPORT PORTAL
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <div
+                class="seller-pill"
+                id="sellerPill"
+        >
+            No Seller Linked
+        </div>
+
+
+        <button
+                type="button"
+                class="logout-btn"
+                onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+
+    <!-- =====================================================
+         WELCOME
+    ====================================================== -->
+
+    <section class="welcome">
+
+        <div class="welcome-content">
+
+            <div class="welcome-eyebrow">
+                CUSTOMER DASHBOARD
+            </div>
+
+            <h1 id="welcomeTitle">
+                Welcome back
+            </h1>
+
+            <p id="welcomeDescription">
+                Track your orders and get support whenever you need it.
+            </p>
+
+            <div
+                    class="customer-badge"
+                    id="customerBadge"
+            >
+                Customer ID: Loading...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Total Orders
+            </div>
+
+            <div
+                    class="summary-value"
+                    id="totalOrders"
+            >
+                0
+            </div>
+
+            <div class="summary-help">
+                Orders connected to your account
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Support Tickets
+            </div>
+
+            <div
+                    class="summary-value"
+                    id="totalTickets"
+            >
+                0
+            </div>
+
+            <div class="summary-help">
+                Issues reported through QueueBot
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Active Issues
+            </div>
+
+            <div
+                    class="summary-value"
+                    id="activeTickets"
+            >
+                0
+            </div>
+
+            <div class="summary-help">
+                Tickets still being handled
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDERS
+    ====================================================== -->
+
+    <section class="section-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    YOUR ORDERS
+                </div>
+
+                <h2>
+                    Recent orders
+                </h2>
+
+                <p>
+                    View your order details and report an issue when something goes wrong.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+                class="orders-grid"
+                id="ordersContainer"
+        >
+
+            <div class="empty loading">
+                Loading orders...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUPPORT TICKETS
+    ====================================================== -->
+
+    <section class="section-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    SUPPORT
+                </div>
+
+                <h2>
+                    My support tickets
+                </h2>
+
+                <p>
+                    QueueBot keeps your support issues and AI analysis connected to your orders.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+                class="tickets-list"
+                id="ticketsContainer"
+        >
+
+            <div class="empty loading">
+                Loading tickets...
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     ISSUE MODAL
+====================================================== -->
+
+<div
+        class="modal-overlay"
+        id="issueModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    REPORT AN ISSUE
+                </div>
+
+                <h2>
+                    Get help with your order
+                </h2>
+
+            </div>
+
+
+            <button
+                    type="button"
+                    class="modal-close"
+                    onclick="closeIssueModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+                class="issue-form"
+                id="issueForm"
+        >
+
+            <div>
+
+                <label>
+                    Selected Order
+                </label>
+
+                <div
+                        class="selected-order-box"
+                        id="selectedOrderBox"
+                >
+                    No order selected.
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <label for="issueType">
+                    Issue Type
+                </label>
+
+                <select
+                        id="issueType"
+                        required
+                >
+
+                    <option value="DAMAGED_PRODUCT">
+                        Damaged Product
+                    </option>
+
+                    <option value="DEFECTIVE_PRODUCT">
+                        Defective Product
+                    </option>
+
+                    <option value="WRONG_ITEM">
+                        Wrong Item
+                    </option>
+
+                    <option value="MISSING_ITEM">
+                        Missing Item
+                    </option>
+
+                    <option value="DELIVERY_DELAY">
+                        Delivery Delay
+                    </option>
+
+                    <option value="MISSING_DELIVERY">
+                        Missing Delivery
+                    </option>
+
+                    <option value="PAYMENT">
+                        Payment Issue
+                    </option>
+
+                    <option value="REFUND">
+                        Refund Request
+                    </option>
+
+                    <option value="RETURN">
+                        Return Request
+                    </option>
+
+                    <option value="EXCHANGE">
+                        Exchange Request
+                    </option>
+
+                    <option value="CANCELLATION">
+                        Cancellation
+                    </option>
+
+                    <option value="ORDER_TRACKING">
+                        Order Tracking
+                    </option>
+
+                    <option value="GENERAL">
+                        General Issue
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label for="issueDescription">
+                    Describe the issue
+                </label>
+
+                <textarea
+                        id="issueDescription"
+                        placeholder="Explain what happened with your order..."
+                        required
+                ></textarea>
+
+            </div>
+
+
+            <div>
+
+                <label for="issuePhoto">
+                    Evidence Image
+                </label>
+
+                <div class="file-upload">
+
+                    <input
+                            type="file"
+                            id="issuePhoto"
+                            accept="image/jpeg,image/png,image/webp"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="issue-footer">
+
+                <button
+                        type="button"
+                        class="issue-btn"
+                        onclick="closeIssueModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                        type="submit"
+                        class="issue-btn primary"
+                        id="issueSubmit"
+                >
+                    Submit Issue
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ORDER MODAL
+====================================================== -->
+
+<div
+        class="modal-overlay"
+        id="orderModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    ORDER DETAILS
+                </div>
+
+                <h2>
+                    Order information
+                </h2>
+
+            </div>
+
+
+            <button
+                    type="button"
+                    class="modal-close"
+                    onclick="closeOrderModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="orderModalContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TICKET MODAL
+====================================================== -->
+
+<div
+        class="modal-overlay"
+        id="ticketModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    SUPPORT TICKET
+                </div>
+
+                <h2>
+                    Ticket details
+                </h2>
+
+            </div>
+
+
+            <button
+                    type="button"
+                    class="modal-close"
+                    onclick="closeTicketModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="ticketModalContent"></div>
+
+    </div>
+
+</div>
+
+
+<div
+        class="toast"
+        id="toast"
+>
+</div>
+
+
+<script>
+
+
+    /* =====================================================
+       GLOBAL STATE
+    ====================================================== */
+
+    let currentUser =
+        null;
+
+    let currentOrders =
+        [];
+
+    let currentTickets =
+        [];
+
+    let selectedOrder =
+        null;
+
+
+    /* =====================================================
+       API HELPER
+    ====================================================== */
+
+    async function api(
+        url,
+        options = {}
+    ) {
+
+        const response =
+            await fetch(
+                url,
+                {
+                    credentials:
+                        "same-origin",
+
+                    ...options,
+
+                    headers: {
+                        ...(options.body instanceof FormData
+                            ? {}
+                            : {
+                                "Content-Type":
+                                    "application/json"
+                            }
+                        ),
+
+                        ...(options.headers || {})
+                    }
+                }
+            );
+
+
+        let data =
+            null;
+
+        const contentType =
+            response.headers.get(
+                "content-type"
+            ) || "";
+
+
+        if (
+            contentType.includes(
+                "application/json"
+            )
+        ) {
+
+            data =
+                await response.json();
+
+        } else {
+
+            data =
+                await response.text();
+
+        }
+
+
+        if (!response.ok) {
+
+            let message =
+                "Request failed.";
+
+            if (
+                data &&
+                typeof data === "object"
+            ) {
+
+                message =
+                    data.message ||
+                    data.error ||
+                    message;
+
+            } else if (
+                typeof data === "string" &&
+                data.trim()
+            ) {
+
+                message =
+                    data;
+
+            }
+
+
+            throw new Error(
+                message
+            );
+
+        }
+
+
+        return data;
+    }
+
+
+    /* =====================================================
+       PAGE INITIALIZATION
+    ====================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        async function () {
+
+            await loadCurrentUser();
+
+        }
+    );
+
+
+    async function loadCurrentUser() {
+
+        try {
+
+            currentUser =
+                await api(
+                    "/auth/me"
+                );
+
+
+            renderCurrentUser();
+
+            await loadOrders();
+
+            await loadTickets();
+
+            updateSummary();
+
+
+        } catch (error) {
+
+            console.error(
+                "Current user:",
+                error
+            );
+
+
+            window.location.href =
+                "/login.html";
+        }
+    }
+
+
+    /* =====================================================
+       USER DISPLAY
+    ====================================================== */
+
+    function renderCurrentUser() {
+
+        if (!currentUser) {
+            return;
+        }
+
+
+        const name =
+            currentUser.name ||
+            "Customer";
+
+
+        const customerId =
+            currentUser.customerId ||
+            "N/A";
+
+
+        const welcomeTitle =
+            document.getElementById(
+                "welcomeTitle"
+            );
+
+
+        const welcomeDescription =
+            document.getElementById(
+                "welcomeDescription"
+            );
+
+
+        const customerBadge =
+            document.getElementById(
+                "customerBadge"
+            );
+
+
+        const sellerPill =
+            document.getElementById(
+                "sellerPill"
+            );
+
+
+        if (welcomeTitle) {
+
+            welcomeTitle.textContent =
+                `Welcome back, ${name}`;
+
+        }
+
+
+        if (welcomeDescription) {
+
+            welcomeDescription.textContent =
+                "Track your orders and get support whenever you need it.";
+
+        }
+
+
+        if (customerBadge) {
+
+            customerBadge.textContent =
+                `Customer ID: ${customerId}`;
+
+        }
+
+
+        if (sellerPill) {
+
+            if (
+                currentUser.sellerId
+            ) {
+
+                sellerPill.textContent =
+                    currentUser.sellerId;
+
+            } else {
+
+                sellerPill.textContent =
+                    "No Seller Linked";
+
+            }
+        }
+    }
+
+
+    /* =====================================================
+       ORDERS
+    ====================================================== */
+
+    async function loadOrders() {
+
+        const container =
+            document.getElementById(
+                "ordersContainer"
+            );
+
+
+        container.innerHTML = `
+
+            <div class="empty loading">
+                Loading orders...
+            </div>
+
+        `;
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/customer/orders"
+                );
+
+
+            currentOrders =
+                Array.isArray(data)
+                    ? data
+                    : data.orders ||
+                      data.content ||
+                      [];
+
+
+            renderOrders();
+
+        } catch (error) {
+
+            console.error(
+                "Orders:",
+                error
+            );
+
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    ${escapeHtml(
+                        error.message ||
+                        "Unable to load orders."
+                    )}
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    function renderOrders() {
+
+        const container =
+            document.getElementById(
+                "ordersContainer"
+            );
+
+
+        if (!currentOrders.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <strong>
+                        No orders yet.
+                    </strong>
+
+                    <br><br>
+
+                    Your orders will appear here once you purchase from a seller.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            currentOrders
+                .map(
+                    order =>
+                        renderOrder(
+                            order
+                        )
+                )
+                .join("");
+    }
+
+
+    function renderOrder(
+        order
+    ) {
+
+        const orderId =
+            order.orderId ||
+            order.id ||
+            "N/A";
+
+
+        const productName =
+            order.productName ||
+            order.product?.name ||
+            "Product";
+
+
+        const quantity =
+            order.quantity ||
+            1;
+
+
+        const amount =
+            order.amount ??
+            0;
+
+
+        const status =
+            order.status ||
+            "PLACED";
+
+
+        const orderDate =
+            formatDate(
+                order.orderDate
+            );
+
+
+        const sellerId =
+            order.sellerId ||
+            order.seller?.sellerId ||
+            "N/A";
+
+
+        return `
+
+            <article
+                class="order-card"
+            >
+
+                <div class="order-top">
+
+                    <div>
+
+                        <div class="order-id">
+                            ${escapeHtml(
+                                String(orderId)
+                            )}
+                        </div>
+
+                    </div>
+
+                    <div class="order-status">
+                        ${escapeHtml(
+                            String(status)
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="order-product">
+                    ${escapeHtml(
+                        String(productName)
+                    )}
+                </div>
+
+
+                <div class="order-meta">
+
+                    Quantity:
+                    ${escapeHtml(
+                        String(quantity)
+                    )}
+
+                    <br>
+
+                    Seller:
+                    ${escapeHtml(
+                        String(sellerId)
+                    )}
+
+                </div>
+
+
+                <div class="order-bottom">
+
+                    <div class="order-amount">
+                        ₹${formatMoney(amount)}
+                    </div>
+
+                    <div class="order-date">
+                        ${escapeHtml(
+                            orderDate
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="order-actions">
+
+                    <button
+                        type="button"
+                        class="order-btn"
+                        onclick="viewOrder('${escapeJs(String(orderId))}')"
+                    >
+                        View Details
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="order-btn primary"
+                        onclick="openIssueModal('${escapeJs(String(orderId))}')"
+                    >
+                        Report Issue
+                    </button>
+
+                </div>
+
+            </article>
+
+        `;
+    }
+
+
+    async function viewOrder(
+        orderIdentifier
+    ) {
+
+        const modal =
+            document.getElementById(
+                "orderModal"
+            );
+
+
+        const content =
+            document.getElementById(
+                "orderModalContent"
+            );
+
+
+        content.innerHTML = `
+
+            <div class="empty loading">
+                Loading order...
+            </div>
+
+        `;
+
+
+        modal.classList.add(
+            "visible"
+        );
+
+
+        try {
+
+            const data =
+                await api(
+                    `/api/customer/orders/${encodeURIComponent(orderIdentifier)}`
+                );
+
+
+            content.innerHTML =
+                renderOrderDetails(
+                    data
+                );
+
+        } catch (error) {
+
+            console.error(
+                "View order:",
+                error
+            );
+
+
+            content.innerHTML = `
+
+                <div class="empty">
+
+                    ${escapeHtml(
+                        error.message ||
+                        "Unable to load order."
+                    )}
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    function renderOrderDetails(
+        order
+    ) {
+
+        const orderId =
+            order.orderId ||
+            order.id ||
+            "N/A";
+
+
+        const productName =
+            order.productName ||
+            order.product?.name ||
+            "Product";
+
+
+        const sellerId =
+            order.sellerId ||
+            order.seller?.sellerId ||
+            "N/A";
+
+
+        const quantity =
+            order.quantity ||
+            1;
+
+
+        const amount =
+            order.amount ??
+            0;
+
+
+        const status =
+            order.status ||
+            "PLACED";
+
+
+        const paymentStatus =
+            order.paymentStatus ||
+            "N/A";
+
+
+        const trackingNumber =
+            order.trackingNumber ||
+            "Not available";
+
+
+        const orderDate =
+            formatDate(
+                order.orderDate
+            );
+
+
+        const deliveryDate =
+            formatDate(
+                order.deliveryDate
+            );
+
+
+        return `
+
+            <div class="selected-order-box">
+
+                <strong>
+                    Order ${escapeHtml(String(orderId))}
+                </strong>
+
+                <br><br>
+
+                Product:
+                ${escapeHtml(String(productName))}
+
+                <br>
+
+                Seller:
+                ${escapeHtml(String(sellerId))}
+
+                <br>
+
+                Quantity:
+                ${escapeHtml(String(quantity))}
+
+                <br>
+
+                Amount:
+                ₹${formatMoney(amount)}
+
+                <br>
+
+                Status:
+                ${escapeHtml(String(status))}
+
+                <br>
+
+                Payment:
+                ${escapeHtml(String(paymentStatus))}
+
+                <br>
+
+                Tracking:
+                ${escapeHtml(String(trackingNumber))}
+
+                <br>
+
+                Order Date:
+                ${escapeHtml(String(orderDate))}
+
+                <br>
+
+                Delivery Date:
+                ${escapeHtml(String(deliveryDate))}
+
+            </div>
+
+        `;
+    }
+
+
+    /* =====================================================
+       ISSUE MODAL
+    ====================================================== */
+
+    function openIssueModal(
+        orderIdentifier
+    ) {
+
+        selectedOrder =
+            findOrder(
+                orderIdentifier
+            );
+
+
+        if (!selectedOrder) {
+
+            showToast(
+                "Order not found.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const modal =
+            document.getElementById(
+                "issueModal"
+            );
+
+
+        const selectedOrderBox =
+            document.getElementById(
+                "selectedOrderBox"
+            );
+
+
+        selectedOrderBox.innerHTML = `
+
+            <strong>
+                ${escapeHtml(
+                    selectedOrder.orderId ||
+                    selectedOrder.id
+                )}
+            </strong>
+
+            <br>
+
+            Product:
+            ${escapeHtml(
+                selectedOrder.productName ||
+                selectedOrder.product?.name ||
+                "Product"
+            )}
+
+            <br>
+
+            Amount:
+            ₹${formatMoney(
+                selectedOrder.amount ?? 0
+            )}
+
+        `;
+
+
+        document.getElementById(
+            "issueDescription"
+        ).value = "";
+
+
+        document.getElementById(
+            "issuePhoto"
+        ).value = "";
+
+
+        modal.classList.add(
+            "visible"
+        );
+    }
+
+
+    function closeIssueModal() {
+
+        const modal =
+            document.getElementById(
+                "issueModal"
+            );
+
+
+        modal.classList.remove(
+            "visible"
+        );
+
+
+        selectedOrder =
+            null;
+    }
+
+
+    function closeOrderModal() {
+
+        const modal =
+            document.getElementById(
+                "orderModal"
+            );
+
+
+        modal.classList.remove(
+            "visible"
+        );
+    }
+
+
+    function closeTicketModal() {
+
+        const modal =
+            document.getElementById(
+                "ticketModal"
+            );
+
+
+        modal.classList.remove(
+            "visible"
+        );
+    }
+
+
+    function findOrder(
+        identifier
+    ) {
+
+        const target =
+            String(
+                identifier
+            );
+
+
+        return currentOrders.find(
+            order =>
+                String(
+                    order.orderId ||
+                    order.id
+                ) === target
+        );
+    }
+
+
+    /* =====================================================
+       CREATE TICKET
+    ====================================================== */
+
+    document
+        .getElementById(
+            "issueForm"
+        )
+        .addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                if (!selectedOrder) {
+
+                    showToast(
+                        "Please select an order.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                const description =
+                    document.getElementById(
+                        "issueDescription"
+                    ).value.trim();
+
+
+                const issueType =
+                    document.getElementById(
+                        "issueType"
+                    ).value;
+
+
+                const photoInput =
+                    document.getElementById(
+                        "issuePhoto"
+                    );
+
+
+                const submitButton =
+                    document.getElementById(
+                        "issueSubmit"
+                    );
+
+
+                if (!description) {
+
+                    showToast(
+                        "Please describe the issue.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                submitButton.disabled = true;
+                submitButton.textContent = "Uploading Evidence...";
+
+
+                try {
+
+                    /*
+                     * Upload evidence first so the final ticket contains
+                     * the image URL when QueueBot analyzes the ticket.
+                     */
+
+                    const photo =
+                        photoInput.files?.[0];
+
+
+                    let evidenceImageUrl =
+                        "";
+
+
+                    if (photo) {
+
+                        const uploadResult =
+                            await uploadEvidence(
+                                photo
+                            );
+
+
+                        if (!uploadResult.success) {
+
+                            throw new Error(
+                                uploadResult.message ||
+                                "Could not upload the evidence image."
+                            );
+                        }
+
+
+                        evidenceImageUrl =
+                            uploadResult.imageUrl ||
+                            "";
+                    }
+
+
+                    submitButton.textContent =
+                        "Analyzing Issue...";
+
+
+                    const ticketPayload = {
+
+                        title:
+                            `${formatIssueTitle(issueType)} - Order ${
+                                selectedOrder.orderId ||
+                                selectedOrder.id
+                            }`,
+
+                        description:
+                            description,
+
+                        issueType:
+                            issueType,
+
+                        orderId:
+                            selectedOrder.id,
+
+                        evidenceImageUrl:
+                            evidenceImageUrl
+
+                    };
+
+
+                    const ticket =
+                        await api(
+                            "/api/customer/tickets",
+                            {
+                                method:
+                                    "POST",
+
+                                body:
+                                    JSON.stringify(
+                                        ticketPayload
+                                    )
+                            }
+                        );
+
+
+                    console.log(
+                        "Created ticket:",
+                        ticket
+                    );
+
+
+                    showToast(
+                        "Issue submitted successfully. QueueBot has analyzed it.",
+                        "success"
+                    );
+
+
+                    closeIssueModal();
+
+
+                    await loadTickets();
+
+                    updateSummary();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Ticket submission:",
+                        error
+                    );
+
+
+                    showToast(
+                        error.message ||
+                        "Could not submit issue.",
+                        "error"
+                    );
+
+
+                } finally {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Submit Issue";
+                }
+            }
+        );
+
+
+    /* =====================================================
+       ISSUE TITLE
+    ====================================================== */
+
+    function formatIssueTitle(
+        issueType
+    ) {
+
+        return String(
+            issueType ||
+            "General Issue"
+        )
+            .toLowerCase()
+            .replaceAll(
+                "_",
+                " "
+            )
+            .replace(
+                /\b\w/g,
+                letter =>
+                    letter.toUpperCase()
+            );
+    }
+
+
+    /* =====================================================
+       EVIDENCE UPLOAD
+    ====================================================== */
+
+    async function uploadEvidence(
+        file
+    ) {
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "image",
+            file
+        );
+
+
+        try {
+
+            const result =
+                await api(
+                    "/api/customer/tickets/upload-image",
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            formData
+                    }
+                );
+
+
+            return {
+
+                success:
+                    true,
+
+                imageUrl:
+                    result.imageUrl ||
+                    "",
+
+                message:
+                    result.message ||
+                    ""
+
+            };
+
+
+        } catch (error) {
+
+            console.error(
+                "Evidence upload error:",
+                error
+            );
+
+
+            return {
+
+                success:
+                    false,
+
+                imageUrl:
+                    "",
+
+                message:
+                    error.message ||
+                    "Unable to upload evidence image."
+
+            };
+        }
+    }
+
+
+    /* =====================================================
+       TICKETS
+    ====================================================== */
+
+    async function loadTickets() {
+
+        const container =
+            document.getElementById(
+                "ticketsContainer"
+            );
+
+
+        container.innerHTML = `
+
+            <div class="empty loading">
+                Loading tickets...
+            </div>
+
+        `;
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/customer/tickets"
+                );
+
+
+            currentTickets =
+                Array.isArray(data)
+                    ? data
+                    : data.tickets ||
+                      data.content ||
+                      [];
+
+
+            renderTickets();
+
+        } catch (error) {
+
+            console.error(
+                "Tickets:",
+                error
+            );
+
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    ${escapeHtml(
+                        error.message ||
+                        "Unable to load tickets."
+                    )}
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    function renderTickets() {
+
+        const container =
+            document.getElementById(
+                "ticketsContainer"
+            );
+
+
+        if (!currentTickets.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    No support tickets yet.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            currentTickets
+                .map(
+                    ticket =>
+                        renderTicket(
+                            ticket
+                        )
+                )
+                .join("");
+    }
+
+
+    function renderTicket(
+        ticket
+    ) {
+
+        const priority =
+            String(
+                ticket.priority ||
+                ticket.finalPriority ||
+                "LOW"
+            )
+            .toUpperCase();
+
+
+        const sentiment =
+            String(
+                ticket.sentiment ||
+                "NEUTRAL"
+            )
+            .toUpperCase();
+
+
+        const urgency =
+            String(
+                ticket.urgency ||
+                "LOW"
+            )
+            .toUpperCase();
+
+
+        const escalationRisk =
+            String(
+                ticket.escalationRisk ||
+                "LOW"
+            )
+            .toUpperCase();
+
+
+        const category =
+            String(
+                ticket.category ||
+                ticket.issueType ||
+                "GENERAL"
+            );
+
+
+        const priorityScore =
+            getScore(
+                ticket
+            );
+
+
+        const priorityClass =
+            getPriorityClass(
+                priority
+            );
+
+
+        const evidence =
+            ticket.evidenceImageUrl ||
+            ticket.imageUrl ||
+            ticket.attachmentUrl ||
+            "";
+
+
+        const sellerResponse =
+            ticket.adminResponse ||
+            ticket.sellerResponse ||
+            ticket.response ||
+            "";
+
+
+        return `
+
+            <article
+                class="ticket-card"
+            >
+
+                <div class="ticket-top">
+
+                    <div>
+
+                        <div class="ticket-title">
+
+                            ${escapeHtml(
+                                ticket.title ||
+                                ticket.issueType ||
+                                "Support Request"
+                            )}
+
+                        </div>
+
+
+                        <div class="ticket-id">
+
+                            ${escapeHtml(
+                                ticket.ticketId ||
+                                `Ticket #${ticket.id}`
+                            )}
+
+                            ${
+                                ticket.orderId
+                                    ? `
+                                        &nbsp; • &nbsp;
+                                        Order
+                                        ${escapeHtml(
+                                            ticket.orderId
+                                        )}
+                                      `
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ticket-badges">
+
+                        <span
+                            class="
+                                badge
+                                ${priorityClass}
+                            "
+                        >
+                            ${escapeHtml(
+                                priority
+                            )}
+                        </span>
+
+
+                        <span
+                            class="badge"
+                        >
+                            ${escapeHtml(
+                                sentiment
+                            )}
+                        </span>
+
+
+                        <span
+                            class="badge"
+                        >
+                            ${escapeHtml(
+                                String(
+                                    ticket.status ||
+                                    "OPEN"
+                                )
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-description">
+
+                    ${escapeHtml(
+                        ticket.description ||
+                        "No description available."
+                    )}
+
+                </div>
+
+
+                <div class="ticket-details">
+
+                    <div class="ticket-detail-item">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                category
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-detail-item">
+
+                        <span>
+                            Priority Score
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                `${priorityScore}/100`
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-detail-item">
+
+                        <span>
+                            Urgency
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                urgency
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-detail-item">
+
+                        <span>
+                            Escalation Risk
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                escalationRisk
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                ${
+                    ticket.priorityReason
+                        ? `
+                            <div class="ticket-response">
+
+                                <strong>
+                                    Why this priority?
+                                </strong>
+
+                                <br><br>
+
+                                ${escapeHtml(
+                                    ticket.priorityReason
+                                )}
+
+                            </div>
+                          `
+                        : ""
+                }
+
+
+                ${
+                    sellerResponse
+                        ? `
+                            <div
+                                class="ticket-response"
+                                style="margin-top:10px;"
+                            >
+
+                                <strong>
+                                    Seller/Admin Response
+                                </strong>
+
+                                <br><br>
+
+                                ${escapeHtml(
+                                    sellerResponse
+                                )}
+
+                            </div>
+                          `
+                        : ""
+                }
+
+
+                ${
+                    evidence
+                        ? `
+                            <div
+                                style="
+                                    margin-top:12px;
+                                    padding:11px;
+                                    border:1px solid #e2e9f0;
+                                    border-radius:12px;
+                                    background:#fafcff;
+                                "
+                            >
+
+                                <div
+                                    style="
+                                        font-size:10px;
+                                        font-weight:800;
+                                        color:#8795a7;
+                                        text-transform:uppercase;
+                                        letter-spacing:.8px;
+                                        margin-bottom:8px;
+                                    "
+                                >
+                                    Evidence
+                                </div>
+
+                                <a
+                                    href="${escapeAttribute(
+                                        evidence
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+
+                                    <img
+                                        src="${escapeAttribute(
+                                            evidence
+                                        )}"
+                                        alt="Ticket evidence"
+                                        style="
+                                            width:120px;
+                                            height:90px;
+                                            object-fit:cover;
+                                            border-radius:9px;
+                                            border:1px solid #dfe7ef;
+                                        "
+                                        onerror="this.style.display='none';"
+                                    >
+
+                                </a>
+
+                            </div>
+                          `
+                        : ""
+                }
+
+
+                <div class="ticket-actions">
+
+                    <button
+                        type="button"
+                        class="ticket-action-btn"
+                        onclick="viewTicket('${escapeJs(
+                            String(
+                                ticket.id
+                            )
+                        )}')"
+                    >
+                        View Ticket
+                    </button>
+
+                </div>
+
+            </article>
+
+        `;
+    }
+
+
+    async function viewTicket(
+        id
+    ) {
+
+        const modal =
+            document.getElementById(
+                "ticketModal"
+            );
+
+
+        const content =
+            document.getElementById(
+                "ticketModalContent"
+            );
+
+
+        content.innerHTML = `
+
+            <div class="empty loading">
+                Loading ticket...
+            </div>
+
+        `;
+
+
+        modal.classList.add(
+            "visible"
+        );
+
+
+        try {
+
+            const ticket =
+                await api(
+                    `/api/customer/tickets/${encodeURIComponent(id)}`
+                );
+
+
+            content.innerHTML =
+                renderTicketDetails(
+                    ticket
+                );
+
+        } catch (error) {
+
+            console.error(
+                "View ticket:",
+                error
+            );
+
+
+            content.innerHTML = `
+
+                <div class="empty">
+
+                    ${escapeHtml(
+                        error.message ||
+                        "Unable to load ticket."
+                    )}
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    function renderTicketDetails(
+        ticket
+    ) {
+
+        const priority =
+            ticket.priority ||
+            ticket.finalPriority ||
+            "LOW";
+
+
+        const priorityScore =
+            getScore(
+                ticket
+            );
+
+
+        const evidence =
+            ticket.evidenceImageUrl ||
+            ticket.imageUrl ||
+            ticket.attachmentUrl ||
+            "";
+
+
+        const sellerResponse =
+            ticket.adminResponse ||
+            ticket.sellerResponse ||
+            ticket.response ||
+            "";
+
+
+        return `
+
+            <div class="selected-order-box">
+
+                <strong>
+                    ${escapeHtml(
+                        ticket.ticketId ||
+                        `Ticket #${ticket.id}`
+                    )}
+                </strong>
+
+                <br><br>
+
+                Title:
+                ${escapeHtml(
+                    ticket.title ||
+                    "Support Request"
+                )}
+
+                <br><br>
+
+                Description:
+                ${escapeHtml(
+                    ticket.description ||
+                    "No description available."
+                )}
+
+                <br><br>
+
+                Category:
+                ${escapeHtml(
+                    ticket.category ||
+                    ticket.issueType ||
+                    "GENERAL"
+                )}
+
+                <br>
+
+                Sentiment:
+                ${escapeHtml(
+                    ticket.sentiment ||
+                    "NEUTRAL"
+                )}
+
+                <br>
+
+                Urgency:
+                ${escapeHtml(
+                    ticket.urgency ||
+                    "LOW"
+                )}
+
+                <br>
+
+                Escalation Risk:
+                ${escapeHtml(
+                    ticket.escalationRisk ||
+                    "LOW"
+                )}
+
+                <br>
+
+                Priority:
+                ${escapeHtml(
+                    priority
+                )}
+
+                <br>
+
+                Priority Score:
+                ${escapeHtml(
+                    `${priorityScore}/100`
+                )}
+
+                <br>
+
+                Status:
+                ${escapeHtml(
+                    ticket.status ||
+                    "OPEN"
+                )}
+
+                <br><br>
+
+                <strong>
+                    Why this priority?
+                </strong>
+
+                <br><br>
+
+                ${escapeHtml(
+                    ticket.priorityReason ||
+                    "No explanation available."
+                )}
+
+                ${
+                    sellerResponse
+                        ? `
+                            <br><br>
+
+                            <strong>
+                                Seller/Admin Response
+                            </strong>
+
+                            <br><br>
+
+                            ${escapeHtml(
+                                sellerResponse
+                            )}
+                          `
+                        : ""
+                }
+
+                ${
+                    evidence
+                        ? `
+                            <br><br>
+
+                            <strong>
+                                Evidence
+                            </strong>
+
+                            <br><br>
+
+                            <a
+                                href="${escapeAttribute(
+                                    evidence
+                                )}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    src="${escapeAttribute(
+                                        evidence
+                                    )}"
+                                    alt="Ticket evidence"
+                                    style="
+                                        width:180px;
+                                        max-width:100%;
+                                        border-radius:10px;
+                                        border:1px solid #dfe7ef;
+                                    "
+                                    onerror="this.style.display='none';"
+                                >
+
+                            </a>
+                          `
+                        : ""
+                }
+
+            </div>
+
+        `;
+    }
+
+
+    /* =====================================================
+       SUMMARY
+    ====================================================== */
+
+    function updateSummary() {
+
+        const totalOrdersElement =
+            document.getElementById(
+                "totalOrders"
+            );
+
+
+        const totalTicketsElement =
+            document.getElementById(
+                "totalTickets"
+            );
+
+
+        const activeTicketsElement =
+            document.getElementById(
+                "activeTickets"
+            );
+
+
+        if (totalOrdersElement) {
+
+            totalOrdersElement.textContent =
+                currentOrders.length;
+
+        }
+
+
+        if (totalTicketsElement) {
+
+            totalTicketsElement.textContent =
+                currentTickets.length;
+
+        }
+
+
+        if (activeTicketsElement) {
+
+            const activeCount =
+                currentTickets.filter(
+                    ticket => {
+
+                        const status =
+                            String(
+                                ticket.status ||
+                                "OPEN"
+                            )
+                            .toUpperCase();
+
+
+                        return (
+                            status === "OPEN" ||
+                            status === "IN_PROGRESS"
+                        );
+                    }
+                ).length;
+
+
+            activeTicketsElement.textContent =
+                activeCount;
+        }
+    }
+
+
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
+
+    async function logout() {
+
+        try {
+
+            await fetch(
+                "/auth/logout",
+                {
+                    method:
+                        "POST",
+
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Logout:",
+                error
+            );
+
+        } finally {
+
+            window.location.href =
+                "/login.html";
+        }
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    let toastTimer =
+        null;
+
+
+    function showToast(
+        message,
+        type = ""
+    ) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.className =
+            "toast visible " +
+            type;
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                function () {
+
+                    toast.className =
+                        "toast";
+
+                },
+                3600
+            );
+    }
+
+
+    /* =====================================================
+       HELPERS
+    ====================================================== */
+
+    function getScore(
+        ticket
+    ) {
+
+        if (
+            ticket &&
+            ticket.priorityScore !== null &&
+            ticket.priorityScore !== undefined
+        ) {
+
+            return Number(
+                ticket.priorityScore
+            );
+
+        }
+
+
+        return 0;
+    }
+
+
+    function getPriorityClass(
+        priority
+    ) {
+
+        const value =
+            String(
+                priority ||
+                "LOW"
+            )
+            .toUpperCase();
+
+
+        if (
+            value ===
+            "CRITICAL"
+        ) {
+
+            return "critical";
+
+        }
+
+
+        if (
+            value ===
+            "HIGH"
+        ) {
+
+            return "high";
+
+        }
+
+
+        if (
+            value ===
+            "MEDIUM"
+        ) {
+
+            return "medium";
+
+        }
+
+
+        return "low";
+    }
+
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+            return "N/A";
+        }
+
+
+        try {
+
+            const date =
+                new Date(
+                    value
+                );
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return String(
+                    value
+                );
+            }
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day:
+                        "2-digit",
+
+                    month:
+                        "short",
+
+                    year:
+                        "numeric"
+                }
+            );
+
+        } catch (error) {
+
+            return String(
+                value
+            );
+
+        }
+    }
+
+
+    function formatMoney(
+        value
+    ) {
+
+        const number =
+            Number(
+                value ||
+                0
+            );
+
+
+        return number.toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits:
+                    2,
+
+                maximumFractionDigits:
+                    2
+            }
+        );
+    }
+
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ??
+            ""
+        )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+    }
+
+
+    function escapeAttribute(
+        value
+    ) {
+
+        return escapeHtml(
+            value
+        );
+    }
+
+
+    function escapeJs(
+        value
+    ) {
+
+        return String(
+            value ??
+            ""
+        )
+            .replaceAll(
+                "\\",
+                "\\\\"
+            )
+            .replaceAll(
+                "'",
+                "\\'"
+            )
+            .replaceAll(
+                "\n",
+                "\\n"
+            )
+            .replaceAll(
+                "\r",
+                "\\r"
+            );
+    }
+
+
+    /* =====================================================
+       CLOSE MODALS WHEN CLICKING OUTSIDE
+    ====================================================== */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const issueModal =
+                document.getElementById(
+                    "issueModal"
+                );
+
+
+            const orderModal =
+                document.getElementById(
+                    "orderModal"
+                );
+
+
+            const ticketModal =
+                document.getElementById(
+                    "ticketModal"
+                );
+
+
+            if (
+                event.target ===
+                issueModal
+            ) {
+
+                closeIssueModal();
+
+            }
+
+
+            if (
+                event.target ===
+                orderModal
+            ) {
+
+                closeOrderModal();
+
+            }
+
+
+            if (
+                event.target ===
+                ticketModal
+            ) {
+
+                closeTicketModal();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,5352 @@
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>QueueBot | Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f7fb;
+
+            color: #172033;
+
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            border: none;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 270px;
+
+            background: #071529;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 1000;
+        }
+
+        .brand {
+            padding: 34px 30px 24px;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: #43a4dd;
+        }
+
+        .brand-subtitle {
+            margin-top: 6px;
+
+            color: #7185a4;
+
+            font-size: 9px;
+
+            letter-spacing: 4px;
+        }
+
+        .nav {
+            padding: 18px;
+            flex: 1;
+        }
+
+        .nav-item {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            margin-bottom: 6px;
+
+            background: transparent;
+
+            border-radius: 12px;
+
+            color: #8ea0bb;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #102b4d;
+            color: white;
+        }
+
+        .logout {
+            margin: 18px;
+
+            padding: 13px;
+
+            background: #10233e;
+
+            color: #a5b4ca;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .main {
+            margin-left: 270px;
+
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 82px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e8edf3;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 36px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+        .page-title h1 {
+            font-size: 25px;
+        }
+
+        .page-title p {
+            color: #8794a8;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+        }
+
+        .profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4389df,
+                    #3ea6b2
+                );
+
+            color: white;
+
+            font-weight: 700;
+        }
+
+        .profile strong {
+            display: block;
+
+            font-size: 14px;
+        }
+
+        .profile span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #8090a8;
+
+            font-size: 11px;
+        }
+
+        .content {
+            padding:
+                30px 36px 50px;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            background: white;
+
+            border:
+                1px solid #e8edf4;
+
+            border-radius: 16px;
+
+            padding: 20px;
+        }
+
+        .stat label {
+            color: #8592a6;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .stat strong {
+            display: block;
+
+            margin-top: 10px;
+
+            font-size: 29px;
+        }
+
+        /* =========================
+           CARDS
+        ========================== */
+
+        .card {
+            background: white;
+
+            border:
+                1px solid #e7ecf3;
+
+            border-radius: 17px;
+
+            padding: 22px;
+
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .card-header h2 {
+            font-size: 17px;
+        }
+
+        .small-text {
+            color: #8996aa;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .primary-btn {
+            padding:
+                10px 16px;
+
+            border-radius:
+                9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4a83ee,
+                    #42a5b2
+                );
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .secondary-btn {
+            padding:
+                9px 13px;
+
+            border-radius:
+                9px;
+
+            background: #f0f4f8;
+
+            color: #59677b;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .danger-btn {
+            padding:
+                9px 13px;
+
+            border-radius:
+                9px;
+
+            background: #fff0f0;
+
+            color: #c54646;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           SEARCH
+        ========================== */
+
+        .toolbar {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar-right {
+            display: flex;
+
+            gap: 9px;
+
+            align-items: center;
+        }
+
+        .search {
+            width: 230px;
+
+            padding:
+                10px 12px;
+
+            border:
+                1px solid #dde3eb;
+
+            border-radius:
+                9px;
+
+            outline: none;
+        }
+
+        /* =========================
+           TABLE
+        ========================== */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            background:
+                #fafbfd;
+
+            color:
+                #8592a6;
+
+            font-size:
+                10px;
+
+            padding:
+                12px;
+
+            border-bottom:
+                1px solid #e7ebf1;
+        }
+
+        td {
+            padding:
+                14px 12px;
+
+            font-size:
+                12px;
+
+            border-bottom:
+                1px solid #edf0f4;
+        }
+
+        /* =========================
+           BADGES
+        ========================== */
+
+        .badge {
+            display: inline-flex;
+
+            padding:
+                5px 9px;
+
+            border-radius:
+                20px;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+        }
+
+        .badge-critical {
+            background: #ffe8e8;
+            color: #c83d3d;
+        }
+
+        .badge-high {
+            background: #fff0dd;
+            color: #b96a17;
+        }
+
+        .badge-medium {
+            background: #fff8df;
+            color: #95731a;
+        }
+
+        .badge-low {
+            background: #eaf4ff;
+            color: #3d73b6;
+        }
+
+        .badge-negative {
+            background: #ffe8e8;
+            color: #bc4141;
+        }
+
+        .badge-neutral {
+            background: #eef3f8;
+            color: #647286;
+        }
+
+        .badge-positive {
+            background: #e8f8ee;
+            color: #29734a;
+        }
+
+        /* =========================
+           TICKET ACTIONS
+        ========================== */
+
+        .ticket-actions {
+            display: flex;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding:
+                7px 10px;
+
+            border-radius:
+                7px;
+
+            background:
+                #edf3fb;
+
+            color:
+                #3e6186;
+
+            cursor:
+                pointer;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+        }
+
+        .respond-btn {
+            background:
+                #e8f7ef;
+
+            color:
+                #28734b;
+        }
+
+        .delete-btn {
+            background:
+                #fff0f0;
+
+            color:
+                #c74747;
+        }
+
+        /* =========================
+           CUSTOMER / ORDER / PRODUCT
+        ========================== */
+
+        .grid-2 {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .grid-3 {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+        }
+
+        .product-card {
+            border:
+                1px solid #e5ebf2;
+
+            border-radius:
+                14px;
+
+            overflow:
+                hidden;
+        }
+
+        .product-image {
+            width:
+                100%;
+
+            height:
+                160px;
+
+            object-fit:
+                cover;
+
+            background:
+                #f0f3f7;
+        }
+
+        .product-info {
+            padding:
+                15px;
+        }
+
+        .product-info h3 {
+            font-size:
+                14px;
+        }
+
+        .product-info p {
+            color:
+                #8491a5;
+
+            margin-top:
+                5px;
+
+            font-size:
+                10px;
+        }
+
+        .product-bottom {
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin-top:
+                13px;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            position:
+                fixed;
+
+            inset:
+                0;
+
+            background:
+                rgba(5,17,32,.61);
+
+            display:
+                none;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                18px;
+
+            z-index:
+                4000;
+        }
+
+        .modal-overlay.show {
+            display:
+                flex;
+        }
+
+        .modal {
+            width:
+                min(760px, 100%);
+
+            max-height:
+                92vh;
+
+            overflow-y:
+                auto;
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.25);
+        }
+
+        .modal-header {
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                20px 22px;
+
+            border-bottom:
+                1px solid #edf0f4;
+
+            position:
+                sticky;
+
+            top:
+                0;
+
+            background:
+                white;
+
+            z-index:
+                2;
+        }
+
+        .modal-header h2 {
+            font-size:
+                18px;
+        }
+
+        .close {
+            width:
+                33px;
+
+            height:
+                33px;
+
+            border-radius:
+                9px;
+
+            background:
+                #f0f3f7;
+
+            color:
+                #657387;
+
+            cursor:
+                pointer;
+
+            font-size:
+                17px;
+        }
+
+        .modal-body {
+            padding:
+                22px;
+        }
+
+        /* =========================
+           TICKET DETAIL
+        ========================== */
+
+        .ticket-detail-title {
+            font-size:
+                20px;
+
+            font-weight:
+                750;
+
+            margin-bottom:
+                5px;
+        }
+
+        .ticket-detail-id {
+            color:
+                #8996a8;
+
+            font-size:
+                10px;
+
+            margin-bottom:
+                20px;
+        }
+
+        .detail-grid {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                10px;
+
+            margin:
+                17px 0;
+        }
+
+        .detail-box {
+            padding:
+                12px;
+
+            border:
+                1px solid #e6ebf2;
+
+            border-radius:
+                10px;
+
+            background:
+                #fafbfd;
+        }
+
+        .detail-box span {
+            display:
+                block;
+
+            color:
+                #8996a8;
+
+            font-size:
+                9px;
+        }
+
+        .detail-box strong {
+            display:
+                block;
+
+            margin-top:
+                5px;
+
+            font-size:
+                12px;
+        }
+
+        .section-label {
+            display:
+                block;
+
+            color:
+                #728096;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .6px;
+
+            margin-bottom:
+                7px;
+        }
+
+        .description-box {
+            padding:
+                14px;
+
+            background:
+                #f7f9fc;
+
+            border:
+                1px solid #e5eaf1;
+
+            border-radius:
+                11px;
+
+            color:
+                #536175;
+
+            line-height:
+                1.6;
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                15px;
+        }
+
+        .ai-box {
+            padding:
+                15px;
+
+            border:
+                1px solid #dce8f7;
+
+            background:
+                #f5f9ff;
+
+            border-radius:
+                12px;
+
+            margin-bottom:
+                15px;
+        }
+
+        .ai-box h3 {
+            color:
+                #376cae;
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                10px;
+        }
+
+        .ai-box p {
+            color:
+                #556479;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.55;
+
+            margin-top:
+                8px;
+        }
+
+        .evidence-image {
+            width:
+                150px;
+
+            height:
+                150px;
+
+            object-fit:
+                cover;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid #dfe5ec;
+
+            cursor:
+                pointer;
+
+            margin-bottom:
+                17px;
+        }
+
+        .seller-response {
+            padding:
+                15px;
+
+            background:
+                #effaf4;
+
+            border:
+                1px solid #cee9d8;
+
+            border-radius:
+                12px;
+
+            margin-bottom:
+                18px;
+        }
+
+        .seller-response h3 {
+            font-size:
+                13px;
+
+            color:
+                #267249;
+
+            margin-bottom:
+                8px;
+        }
+
+        .seller-response p {
+            color:
+                #52695b;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.55;
+        }
+
+        /* =========================
+           RESPONSE FORM
+        ========================== */
+
+        .response-area {
+            border-top:
+                1px solid #ebeff4;
+
+            padding-top:
+                18px;
+        }
+
+        .response-area textarea {
+            width:
+                100%;
+
+            min-height:
+                115px;
+
+            padding:
+                12px;
+
+            border:
+                1px solid #dce2eb;
+
+            border-radius:
+                10px;
+
+            resize:
+                vertical;
+
+            outline:
+                none;
+        }
+
+        .response-row {
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 180px;
+
+            gap:
+                10px;
+
+            margin-top:
+                10px;
+        }
+
+        /* =========================
+           FORMS
+        ========================== */
+
+        .form-group {
+            margin-bottom:
+                15px;
+        }
+
+        .form-group label {
+            display:
+                block;
+
+            margin-bottom:
+                7px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width:
+                100%;
+
+            padding:
+                11px 12px;
+
+            border:
+                1px solid #dce2eb;
+
+            border-radius:
+                10px;
+
+            outline:
+                none;
+
+            background:
+                #fcfdff;
+        }
+
+        .form-grid {
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                14px;
+        }
+
+        /* =========================
+           EMPTY
+        ========================== */
+
+        .empty {
+            padding:
+                45px 20px;
+
+            text-align:
+                center;
+
+            color:
+                #8a96a8;
+
+            font-size:
+                12px;
+        }
+
+        /* =========================
+           TOAST
+        ========================== */
+
+        .toast {
+            position:
+                fixed;
+
+            right:
+                22px;
+
+            bottom:
+                22px;
+
+            z-index:
+                6000;
+
+            min-width:
+                280px;
+
+            max-width:
+                400px;
+
+            padding:
+                14px 16px;
+
+            border-radius:
+                11px;
+
+            background:
+                #162a44;
+
+            color:
+                white;
+
+            font-size:
+                12px;
+
+            display:
+                none;
+
+            box-shadow:
+                0 15px 35px
+                rgba(0,0,0,.2);
+        }
+
+        .toast.show {
+            display:
+                block;
+        }
+
+        .toast.success {
+            background:
+                #216c49;
+        }
+
+        .toast.error {
+            background:
+                #8b3838;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media(max-width:1050px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .grid-3 {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width:800px) {
+
+            .sidebar {
+                width:
+                    225px;
+            }
+
+            .main {
+                margin-left:
+                    225px;
+            }
+
+            .content {
+                padding:
+                    20px;
+            }
+
+            .detail-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .sidebar {
+                display:
+                    none;
+            }
+
+            .main {
+                margin-left:
+                    0;
+            }
+
+            .topbar {
+                padding:
+                    0 18px;
+            }
+
+            .profile span {
+                display:
+                    none;
+            }
+
+            .stats,
+            .grid-2,
+            .grid-3,
+            .form-grid,
+            .response-row {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .toolbar {
+                align-items:
+                    stretch;
+
+                flex-direction:
+                    column;
+            }
+
+            .toolbar-right {
+                width:
+                    100%;
+            }
+
+            .search {
+                width:
+                    100%;
+            }
+
+            .detail-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-name">
+            Queue<span>Bot</span>
+        </div>
+
+        <div class="brand-subtitle">
+            SUPPORT MADE SIMPLE
+        </div>
+
+    </div>
+
+
+    <nav class="nav">
+
+        <button
+                class="nav-item active"
+                onclick="showView('dashboard', this)"
+        >
+            Dashboard
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('customers', this)"
+        >
+            Customers
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('orders', this)"
+        >
+            Orders
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('products', this)"
+        >
+            Products
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('tickets', this)"
+        >
+            Tickets
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('analytics', this)"
+        >
+            Analytics
+        </button>
+
+        <button
+                class="nav-item"
+                onclick="showView('profile', this)"
+        >
+            My Profile
+        </button>
+
+    </nav>
+
+
+    <button
+            class="logout"
+            onclick="logout()"
+    >
+        Logout
+    </button>
+
+</aside>
+
+
+<main class="main">
+
+
+    <header class="topbar">
+
+        <div class="page-title">
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
+
+            <p id="pageSubtitle">
+                Overview of your support operations
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div
+                    class="avatar"
+                    id="avatar"
+            >
+                A
+            </div>
+
+            <div>
+
+                <strong id="profileName">
+                    Admin
+                </strong>
+
+                <span id="profileSeller">
+                Seller
+            </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+
+        <!-- ======================================================
+             DASHBOARD
+        ======================================================= -->
+
+        <section
+                class="view active"
+                id="view-dashboard"
+        >
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <label>
+                        CUSTOMERS
+                    </label>
+
+                    <strong id="dashboardCustomers">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        ORDERS
+                    </label>
+
+                    <strong id="dashboardOrders">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        PRODUCTS
+                    </label>
+
+                    <strong id="dashboardProducts">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        OPEN TICKETS
+                    </label>
+
+                    <strong id="dashboardTickets">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid-2">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                            style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(3,1fr);
+                    gap:10px;
+                "
+                    >
+
+                        <button
+                                class="primary-btn"
+                                onclick="openCustomerModal()"
+                        >
+                            + Customer
+                        </button>
+
+                        <button
+                                class="primary-btn"
+                                onclick="openOrderModal()"
+                        >
+                            + Order
+                        </button>
+
+                        <button
+                                class="primary-btn"
+                                onclick="openProductModal()"
+                        >
+                            + Product
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Ticket Intelligence
+                        </h2>
+
+                    </div>
+
+                    <div class="small-text">
+
+                        Critical:
+                        <strong id="criticalCount">
+                            0
+                        </strong>
+
+                        &nbsp;&nbsp;
+
+                        High:
+                        <strong id="highCount">
+                            0
+                        </strong>
+
+                        &nbsp;&nbsp;
+
+                        Avg Score:
+                        <strong id="averageScore">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ======================================================
+             CUSTOMERS
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-customers"
+        >
+
+            <div class="card">
+
+                <div class="toolbar">
+
+                    <div>
+
+                        <h2>
+                            Customers
+                        </h2>
+
+                        <div class="small-text">
+                            Customer records connected to this seller
+                        </div>
+
+                    </div>
+
+
+                    <div class="toolbar-right">
+
+                        <input
+                                class="search"
+                                id="customerSearch"
+                                placeholder="Search customers..."
+                                oninput="filterCustomers()"
+                        >
+
+                        <button
+                                class="primary-btn"
+                                onclick="openCustomerModal()"
+                        >
+                            + Add Customer
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                CUSTOMER ID
+                            </th>
+
+                            <th>
+                                NAME
+                            </th>
+
+                            <th>
+                                PHONE
+                            </th>
+
+                            <th>
+                                EMAIL
+                            </th>
+
+                            <th>
+                                STATUS
+                            </th>
+
+                            <th>
+                                ACTION
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody
+                                id="customersTable"
+                        ></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+             ORDERS
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-orders"
+        >
+
+            <div class="card">
+
+                <div class="toolbar">
+
+                    <div>
+
+                        <h2>
+                            Orders
+                        </h2>
+
+                        <div class="small-text">
+                            Orders recorded by this seller
+                        </div>
+
+                    </div>
+
+
+                    <div class="toolbar-right">
+
+                        <input
+                                class="search"
+                                id="orderSearch"
+                                placeholder="Search orders..."
+                                oninput="filterOrders()"
+                        >
+
+                        <button
+                                class="primary-btn"
+                                onclick="openOrderModal()"
+                        >
+                            + Add Order
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                ORDER ID
+                            </th>
+
+                            <th>
+                                CUSTOMER
+                            </th>
+
+                            <th>
+                                PRODUCT
+                            </th>
+
+                            <th>
+                                QTY
+                            </th>
+
+                            <th>
+                                AMOUNT
+                            </th>
+
+                            <th>
+                                PAYMENT
+                            </th>
+
+                            <th>
+                                STATUS
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody
+                                id="ordersTable"
+                        ></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+             PRODUCTS
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-products"
+        >
+
+            <div class="card">
+
+                <div class="toolbar">
+
+                    <div>
+
+                        <h2>
+                            Products
+                        </h2>
+
+                        <div class="small-text">
+                            Product catalog
+                        </div>
+
+                    </div>
+
+
+                    <div class="toolbar-right">
+
+                        <input
+                                class="search"
+                                id="productSearch"
+                                placeholder="Search products..."
+                                oninput="filterProducts()"
+                        >
+
+                        <button
+                                class="primary-btn"
+                                onclick="openProductModal()"
+                        >
+                            + Add Product
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                        class="grid-3"
+                        id="productsGrid"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+             TICKETS
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-tickets"
+        >
+
+            <div class="card">
+
+                <div class="toolbar">
+
+                    <div>
+
+                        <h2>
+                            Support Tickets
+                        </h2>
+
+                        <div class="small-text">
+                            AI-prioritized customer issues
+                        </div>
+
+                    </div>
+
+
+                    <div class="toolbar-right">
+
+                        <button
+                                class="secondary-btn"
+                                onclick="loadTickets()"
+                        >
+                            Refresh
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                TICKET
+                            </th>
+
+                            <th>
+                                CUSTOMER
+                            </th>
+
+                            <th>
+                                ISSUE
+                            </th>
+
+                            <th>
+                                PRIORITY
+                            </th>
+
+                            <th>
+                                SENTIMENT
+                            </th>
+
+                            <th>
+                                SCORE
+                            </th>
+
+                            <th>
+                                STATUS
+                            </th>
+
+                            <th>
+                                ACTION
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody
+                                id="ticketsTable"
+                        ></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+             ANALYTICS
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-analytics"
+        >
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <label>
+                        TOTAL TICKETS
+                    </label>
+
+                    <strong id="analyticsTotal">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        CRITICAL
+                    </label>
+
+                    <strong id="analyticsCritical">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        HIGH PRIORITY
+                    </label>
+
+                    <strong id="analyticsHigh">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <label>
+                        NEGATIVE SENTIMENT
+                    </label>
+
+                    <strong id="analyticsNegative">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    QueueBot Support Intelligence
+                </h2>
+
+                <p
+                        class="small-text"
+                        style="
+                margin-top:10px;
+                line-height:1.7;
+            "
+                >
+                    QueueBot analyzes customer issues using category,
+                    sentiment, urgency, escalation risk and priority
+                    scoring before the seller responds.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+             PROFILE
+        ======================================================= -->
+
+        <section
+                class="view"
+                id="view-profile"
+        >
+
+            <div class="card">
+
+                <h2>
+                    My Profile
+                </h2>
+
+
+                <div
+                        class="form-grid"
+                        style="margin-top:20px;"
+                >
+
+                    <div class="form-group">
+
+                        <label>
+                            Name
+                        </label>
+
+                        <input
+                                id="profilePageName"
+                                readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Role
+                        </label>
+
+                        <input
+                                id="profilePageRole"
+                                readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Seller ID
+                        </label>
+
+                        <input
+                                id="profilePageSeller"
+                                readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                                id="profilePageEmail"
+                                readonly
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<!-- ======================================================
+     TICKET DETAILS MODAL
+======================================================= -->
+
+<div
+        class="modal-overlay"
+        id="ticketModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Ticket Management
+            </h2>
+
+            <button
+                    class="close"
+                    onclick="closeModal('ticketModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+                class="modal-body"
+                id="ticketModalBody"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     CUSTOMER MODAL
+======================================================= -->
+
+<div
+        class="modal-overlay"
+        id="customerModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Add Customer
+            </h2>
+
+            <button
+                    class="close"
+                    onclick="closeModal('customerModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <form
+                    id="customerForm"
+            >
+
+                <div class="form-group">
+
+                    <label>
+                        Name
+                    </label>
+
+                    <input
+                            id="customerName"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                    </label>
+
+                    <input
+                            id="customerPhone"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                            id="customerEmail"
+                            type="email"
+                    >
+
+                </div>
+
+
+                <button
+                        class="primary-btn"
+                        type="submit"
+                >
+                    Add Customer
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     ORDER MODAL
+======================================================= -->
+
+<div
+        class="modal-overlay"
+        id="orderModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Add Order
+            </h2>
+
+            <button
+                    class="close"
+                    onclick="closeModal('orderModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <form
+                    id="orderForm"
+            >
+
+                <div class="form-group">
+
+                    <label>
+                        Customer
+                    </label>
+
+                    <select
+                            id="orderCustomer"
+                            required
+                    >
+
+                        <option value="">
+                            Select customer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Order ID
+                    </label>
+
+                    <input
+                            id="orderId"
+                            placeholder="ORD-001"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Product
+                    </label>
+
+                    <select
+                            id="orderProduct"
+                            required
+                    >
+
+                        <option value="">
+                            Select product
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Quantity
+                        </label>
+
+                        <input
+                                type="number"
+                                min="1"
+                                value="1"
+                                id="orderQuantity"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Amount
+                        </label>
+
+                        <input
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                id="orderAmount"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Order Date
+                        </label>
+
+                        <input
+                                type="date"
+                                id="orderDate"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Delivery Date
+                        </label>
+
+                        <input
+                                type="date"
+                                id="deliveryDate"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Payment
+                        </label>
+
+                        <select
+                                id="paymentStatus"
+                        >
+
+                            <option value="PAID">
+                                PAID
+                            </option>
+
+                            <option value="PENDING">
+                                PENDING
+                            </option>
+
+                            <option value="FAILED">
+                                FAILED
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select
+                                id="orderStatus"
+                        >
+
+                            <option value="PLACED">
+                                PLACED
+                            </option>
+
+                            <option value="PROCESSING">
+                                PROCESSING
+                            </option>
+
+                            <option value="SHIPPED">
+                                SHIPPED
+                            </option>
+
+                            <option value="DELIVERED">
+                                DELIVERED
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                        class="primary-btn"
+                        type="submit"
+                >
+                    Add Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     PRODUCT MODAL
+======================================================= -->
+
+<div
+        class="modal-overlay"
+        id="productModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Add Product
+            </h2>
+
+            <button
+                    class="close"
+                    onclick="closeModal('productModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <form
+                    id="productForm"
+            >
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Product ID
+                        </label>
+
+                        <input
+                                id="productId"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            SKU
+                        </label>
+
+                        <input
+                                id="productSku"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Product Name
+                    </label>
+
+                    <input
+                            id="productName"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <input
+                                id="productCategory"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Brand
+                        </label>
+
+                        <input
+                                id="productBrand"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Price
+                        </label>
+
+                        <input
+                                type="number"
+                                step="0.01"
+                                id="productPrice"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Stock
+                        </label>
+
+                        <input
+                                type="number"
+                                id="productStock"
+                                min="0"
+                                required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Image URL (Optional)
+                    </label>
+
+                    <input type="file" id="productImage" accept="image/*">
+
+                </div>
+
+
+                <button
+                        class="primary-btn"
+                        type="submit"
+                >
+                    Add Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+        class="toast"
+        id="toast"
+></div>
+
+
+<script>
+
+    let currentUser = null;
+
+    let customers = [];
+
+    let orders = [];
+
+    let products = [];
+
+    let tickets = [];
+
+    let currentTicket = null;
+
+
+    /* =====================================================
+       HELPERS
+    ====================================================== */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    async function api(
+        url,
+        options = {}
+    ) {
+
+        const headers = {
+            ...(options.headers || {})
+        };
+
+
+        if (
+            !(options.body instanceof FormData)
+        ) {
+
+            headers["Content-Type"] =
+                "application/json";
+        }
+
+
+        const response =
+            await fetch(
+                url,
+                {
+                    ...options,
+                    credentials:
+                        "same-origin",
+                    headers
+                }
+            );
+
+
+        let data = {};
+
+        const type =
+            response.headers.get(
+                "content-type"
+            ) || "";
+
+
+        if (
+            type.includes(
+                "application/json"
+            )
+        ) {
+
+            data =
+                await response.json();
+
+        } else {
+
+            data = {
+                message:
+                    await response.text()
+            };
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                data.error ||
+                `Request failed (${response.status})`
+            );
+        }
+
+
+        return data;
+    }
+
+
+    function toast(
+        message,
+        type = "normal"
+    ) {
+
+        const element =
+            document.getElementById(
+                "toast"
+            );
+
+
+        element.textContent =
+            message;
+
+
+        element.className =
+            "toast show";
+
+
+        if (type === "success") {
+
+            element.classList.add(
+                "success"
+            );
+
+        } else if (type === "error") {
+
+            element.classList.add(
+                "error"
+            );
+        }
+
+
+        setTimeout(
+            () =>
+                element.classList.remove(
+                    "show"
+                ),
+            3500
+        );
+    }
+
+
+    function closeModal(id) {
+
+        document
+            .getElementById(id)
+            ?.classList
+            .remove("show");
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+    ====================================================== */
+
+    function showView(
+        name,
+        button
+    ) {
+
+        document
+            .querySelectorAll(".view")
+            .forEach(
+                view =>
+                    view.classList.remove(
+                        "active"
+                    )
+            );
+
+
+        document
+            .getElementById(
+                `view-${name}`
+            )
+            .classList.add(
+                "active"
+            );
+
+
+        document
+            .querySelectorAll(".nav-item")
+            .forEach(
+                item =>
+                    item.classList.remove(
+                        "active"
+                    )
+            );
+
+
+        button?.classList.add(
+            "active"
+        );
+
+
+        const titles = {
+
+            dashboard: [
+                "Dashboard",
+                "Overview of your support operations"
+            ],
+
+            customers: [
+                "Customers",
+                "Manage customer records"
+            ],
+
+            orders: [
+                "Orders",
+                "Manage customer orders"
+            ],
+
+            products: [
+                "Products",
+                "Manage your catalog"
+            ],
+
+            tickets: [
+                "Tickets",
+                "Review customer support requests"
+            ],
+
+            analytics: [
+                "Analytics",
+                "QueueBot intelligence overview"
+            ],
+
+            profile: [
+                "My Profile",
+                "Administrator information"
+            ]
+
+        };
+
+
+        document.getElementById(
+            "pageTitle"
+        ).textContent =
+            titles[name][0];
+
+
+        document.getElementById(
+            "pageSubtitle"
+        ).textContent =
+            titles[name][1];
+
+
+        if (name === "customers") {
+            loadCustomers();
+        }
+
+        if (name === "orders") {
+            loadOrders();
+        }
+
+        if (name === "products") {
+            loadProducts();
+        }
+
+        if (name === "tickets") {
+            loadTickets();
+        }
+
+        if (name === "analytics") {
+            loadTicketStats();
+        }
+    }
+
+
+    /* =====================================================
+       USER
+    ====================================================== */
+
+    async function loadUser() {
+
+        try {
+
+            currentUser =
+                await api(
+                    "/auth/me"
+                );
+
+
+            const name =
+                currentUser.name ||
+                currentUser.email ||
+                "Admin";
+
+
+            const seller =
+                currentUser.sellerId ||
+                currentUser.seller?.sellerId ||
+                "Seller";
+
+
+            document.getElementById(
+                "profileName"
+            ).textContent =
+                name;
+
+
+            document.getElementById(
+                "profileSeller"
+            ).textContent =
+                seller;
+
+
+            document.getElementById(
+                "avatar"
+            ).textContent =
+                name.charAt(0).toUpperCase();
+
+
+            document.getElementById(
+                "profilePageName"
+            ).value =
+                name;
+
+
+            document.getElementById(
+                "profilePageRole"
+            ).value =
+                currentUser.role ||
+                "ADMIN";
+
+
+            document.getElementById(
+                "profilePageSeller"
+            ).value =
+                seller;
+
+
+            document.getElementById(
+                "profilePageEmail"
+            ).value =
+                currentUser.email ||
+                "";
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    }
+
+
+    async function logout() {
+
+        try {
+
+            await fetch(
+                "/auth/logout",
+                {
+                    method: "POST",
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+        } catch (error) {
+
+            console.error(error);
+        }
+
+
+        window.location.href =
+            "/login.html";
+    }
+
+
+    /* =====================================================
+       RESPONSE NORMALIZER
+       Keeps the existing UI unchanged and accepts the common
+       response shapes used by the backend.
+    ====================================================== */
+
+    function extractList(data, keys = []) {
+
+        if (Array.isArray(data)) {
+            return data;
+        }
+
+        if (!data || typeof data !== "object") {
+            return [];
+        }
+
+        for (const key of keys) {
+
+            if (Array.isArray(data[key])) {
+                return data[key];
+            }
+        }
+
+        if (Array.isArray(data.content)) {
+            return data.content;
+        }
+
+        if (data.data && typeof data.data === "object") {
+            return extractList(
+                data.data,
+                keys
+            );
+        }
+
+        return [];
+    }
+
+
+    /* =====================================================
+       CUSTOMERS
+    ====================================================== */
+
+    async function loadCustomers() {
+
+        try {
+
+            const data =
+                await api(
+                    "/api/customers"
+                );
+
+
+            customers =
+                extractList(
+                    data,
+                    [
+                        "customers",
+                        "items",
+                        "results"
+                    ]
+                );
+
+
+            renderCustomers();
+
+
+            document.getElementById(
+                "dashboardCustomers"
+            ).textContent =
+                customers.length;
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "customersTable"
+            ).innerHTML = `
+
+                <tr>
+
+                    <td colspan="6">
+
+                        <div class="empty">
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+        }
+    }
+
+
+    function renderCustomers(
+        list = customers
+    ) {
+
+        const body =
+            document.getElementById(
+                "customersTable"
+            );
+
+
+        if (!list.length) {
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td colspan="6">
+
+                        <div class="empty">
+                            No customers found.
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        body.innerHTML =
+            list.map(customer => `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(
+                                customer.customerId ||
+                                "—"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            customer.name ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            customer.phone ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            customer.email ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span class="badge badge-low">
+
+                            ${
+                                customer.active === false
+                                    ? "INACTIVE"
+                                    : "ACTIVE"
+                            }
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${
+                            customer.id
+                                ? `
+                                    <button
+                                        class="action-btn delete-btn"
+                                        onclick="
+                                            deactivateCustomer(
+                                                ${customer.id}
+                                            )
+                                        "
+                                    >
+                                        Deactivate
+                                    </button>
+                                  `
+                                : ""
+                        }
+
+                    </td>
+
+                </tr>
+
+            `).join("");
+    }
+
+
+    function filterCustomers() {
+
+        const search =
+            document.getElementById(
+                "customerSearch"
+            )
+            .value
+            .toLowerCase();
+
+
+        renderCustomers(
+            customers.filter(customer => {
+
+                const text = [
+
+                    customer.customerId,
+
+                    customer.name,
+
+                    customer.phone,
+
+                    customer.email
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return text.includes(
+                    search
+                );
+            })
+        );
+    }
+
+
+    function openCustomerModal() {
+
+        document.getElementById(
+            "customerForm"
+        ).reset();
+
+
+        document
+            .getElementById(
+                "customerModal"
+            )
+            .classList
+            .add("show");
+    }
+
+
+    document.getElementById(
+        "customerForm"
+    ).addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                await api(
+                    "/auth/admin/customers",
+                    {
+                        method: "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                name:
+                                    document.getElementById(
+                                        "customerName"
+                                    ).value.trim(),
+
+                                phone:
+                                    document.getElementById(
+                                        "customerPhone"
+                                    ).value.trim(),
+
+                                email:
+                                    document.getElementById(
+                                        "customerEmail"
+                                    ).value.trim()
+
+                            })
+                    }
+                );
+
+
+                closeModal(
+                    "customerModal"
+                );
+
+
+                toast(
+                    "Customer added successfully.",
+                    "success"
+                );
+
+
+                loadCustomers();
+
+            } catch (error) {
+
+                toast(
+                    error.message,
+                    "error"
+                );
+            }
+        }
+    );
+
+
+    async function deactivateCustomer(
+        id
+    ) {
+
+        if (
+            !confirm(
+                "Deactivate this customer?"
+            )
+        ) {
+
+            return;
+        }
+
+
+        try {
+
+            await api(
+                `/api/customers/${id}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+
+            toast(
+                "Customer deactivated.",
+                "success"
+            );
+
+
+            loadCustomers();
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       ORDERS
+    ====================================================== */
+
+    async function loadOrders() {
+
+        try {
+
+            const data =
+                await api(
+                    "/api/orders"
+                );
+
+
+            orders =
+                extractList(
+                    data,
+                    [
+                        "orders",
+                        "items",
+                        "results"
+                    ]
+                );
+
+
+            renderOrders();
+
+
+            document.getElementById(
+                "dashboardOrders"
+            ).textContent =
+                orders.length;
+
+        } catch (error) {
+
+            document.getElementById(
+                "ordersTable"
+            ).innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        <div class="empty">
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+        }
+    }
+
+
+    function renderOrders(
+        list = orders
+    ) {
+
+        const body =
+            document.getElementById(
+                "ordersTable"
+            );
+
+
+        if (!list.length) {
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        <div class="empty">
+                            No orders found.
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        body.innerHTML =
+            list.map(order => `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(
+                                order.orderId ||
+                                order.id ||
+                                "—"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            order.customer?.name ||
+                            order.customerName ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            order.product?.name ||
+                            order.productName ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            order.quantity ||
+                            0
+                        )}
+                    </td>
+
+                    <td>
+                        ₹${Number(
+                            order.amount ||
+                            0
+                        ).toLocaleString(
+                            "en-IN"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            order.paymentStatus ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span class="badge badge-low">
+                            ${escapeHtml(
+                                order.status ||
+                                "PLACED"
+                            )}
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `).join("");
+    }
+
+
+    function filterOrders() {
+
+        const search =
+            document.getElementById(
+                "orderSearch"
+            )
+            .value
+            .toLowerCase();
+
+
+        renderOrders(
+            orders.filter(order => {
+
+                const text = [
+
+                    order.orderId,
+
+                    order.customer?.name,
+
+                    order.customer?.customerId,
+
+                    order.product?.name,
+
+                    order.status,
+
+                    order.paymentStatus
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return text.includes(
+                    search
+                );
+            })
+        );
+    }
+
+
+    function openOrderModal() {
+
+        populateOrderCustomers();
+
+        populateOrderProducts();
+
+
+        document.getElementById(
+            "orderForm"
+        ).reset();
+
+
+        const today =
+            new Date()
+                .toISOString()
+                .split("T")[0];
+
+
+        document.getElementById(
+            "orderDate"
+        ).value =
+            today;
+
+
+        document
+            .getElementById(
+                "orderModal"
+            )
+            .classList
+            .add("show");
+    }
+
+
+    function populateOrderCustomers() {
+
+        const select =
+            document.getElementById(
+                "orderCustomer"
+            );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Select customer
+            </option>
+
+        `;
+
+
+        customers.forEach(
+            customer => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    customer.customerId;
+
+
+                option.textContent =
+                    `${customer.name || "Customer"} (${customer.customerId || customer.id})`;
+
+
+                select.appendChild(
+                    option
+                );
+            }
+        );
+    }
+
+
+    function populateOrderProducts() {
+
+        const select =
+            document.getElementById(
+                "orderProduct"
+            );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Select product
+            </option>
+
+        `;
+
+
+        products.forEach(
+            product => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    product.productId ||
+                    product.id;
+
+
+                option.dataset.price =
+                    product.price ||
+                    0;
+
+
+                option.textContent =
+                    `${product.name || "Product"} — ₹${Number(product.price || 0).toLocaleString("en-IN")}`;
+
+
+                select.appendChild(
+                    option
+                );
+            }
+        );
+    }
+
+
+    document.getElementById(
+        "orderProduct"
+    ).addEventListener(
+        "change",
+        updateOrderAmount
+    );
+
+
+    document.getElementById(
+        "orderQuantity"
+    ).addEventListener(
+        "input",
+        updateOrderAmount
+    );
+
+
+    function updateOrderAmount() {
+
+        const select =
+            document.getElementById(
+                "orderProduct"
+            );
+
+
+        const option =
+            select.options[
+                select.selectedIndex
+            ];
+
+
+        if (
+            !option ||
+            !option.value
+        ) {
+
+            document.getElementById(
+                "orderAmount"
+            ).value = "";
+
+            return;
+        }
+
+
+        const price =
+            Number(
+                option.dataset.price
+            ) || 0;
+
+
+        const quantity =
+            Number(
+                document.getElementById(
+                    "orderQuantity"
+                ).value
+            ) || 1;
+
+
+        document.getElementById(
+            "orderAmount"
+        ).value =
+            (
+                price * quantity
+            ).toFixed(2);
+    }
+
+
+    document.getElementById(
+        "orderForm"
+    ).addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                await api(
+                    "/api/orders",
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                orderId:
+                                    document.getElementById(
+                                        "orderId"
+                                    ).value.trim(),
+
+                                customerId:
+                                    document.getElementById(
+                                        "orderCustomer"
+                                    ).value,
+
+                                productId:
+                                    document.getElementById(
+                                        "orderProduct"
+                                    ).value,
+
+                                quantity:
+                                    Number(
+                                        document.getElementById(
+                                            "orderQuantity"
+                                        ).value
+                                    ),
+
+                                amount:
+                                    Number(
+                                        document.getElementById(
+                                            "orderAmount"
+                                        ).value
+                                    ),
+
+                                orderDate:
+                                    document.getElementById(
+                                        "orderDate"
+                                    ).value || null,
+
+                                deliveryDate:
+                                    document.getElementById(
+                                        "deliveryDate"
+                                    ).value || null,
+
+                                paymentStatus:
+                                    document.getElementById(
+                                        "paymentStatus"
+                                    ).value,
+
+                                status:
+                                    document.getElementById(
+                                        "orderStatus"
+                                    ).value
+
+                            })
+                    }
+                );
+
+
+                closeModal(
+                    "orderModal"
+                );
+
+
+                toast(
+                    "Order added successfully.",
+                    "success"
+                );
+
+
+                loadOrders();
+
+            } catch (error) {
+
+                toast(
+                    error.message,
+                    "error"
+                );
+            }
+        }
+    );
+
+
+    /* =====================================================
+       PRODUCTS
+    ====================================================== */
+
+    async function loadProducts() {
+
+        try {
+
+            const data =
+                await api(
+                    "/api/products"
+                );
+
+
+            products =
+                extractList(
+                    data,
+                    [
+                        "products",
+                        "items",
+                        "results"
+                    ]
+                );
+
+
+            renderProducts();
+
+            populateOrderProducts();
+
+
+            document.getElementById(
+                "dashboardProducts"
+            ).textContent =
+                products.length;
+
+        } catch (error) {
+
+            document.getElementById(
+                "productsGrid"
+            ).innerHTML = `
+
+                <div class="empty">
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </div>
+
+            `;
+        }
+    }
+
+
+    function renderProducts(
+        list = products
+    ) {
+
+        const grid =
+            document.getElementById(
+                "productsGrid"
+            );
+
+
+        if (!list.length) {
+
+            grid.innerHTML = `
+
+                <div
+                    class="empty"
+                    style="
+                        grid-column:1/-1;
+                    "
+                >
+                    No products found.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        grid.innerHTML =
+            list.map(product => {
+
+                const image =
+                    product.imageUrl;
+
+
+                return `
+
+                    <div class="product-card">
+
+                        ${
+                            image
+
+                                ? `
+                                    <img
+                                        class="product-image"
+                                        src="${escapeHtml(image)}"
+                                        alt="${escapeHtml(product.name || "Product")}"
+                                    >
+                                  `
+
+                                : `
+                                    <div
+                                        class="product-image"
+                                        style="
+                                            display:grid;
+                                            place-items:center;
+                                            font-size:34px;
+                                            color:#8d9aae;
+                                        "
+                                    >
+                                        ▤
+                                    </div>
+                                  `
+                        }
+
+
+                        <div class="product-info">
+
+                            <h3>
+                                ${escapeHtml(
+                                    product.name ||
+                                    "Product"
+                                )}
+                            </h3>
+
+                            <p>
+                                ${escapeHtml(
+                                    product.productId ||
+                                    ""
+                                )}
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>
+                                    ₹${Number(
+                                        product.price ||
+                                        0
+                                    ).toLocaleString(
+                                        "en-IN"
+                                    )}
+                                </strong>
+
+                                <span
+                                    class="small-text"
+                                >
+                                    Stock:
+                                    ${escapeHtml(
+                                        product.stockQuantity ??
+                                        0
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+    }
+
+
+    function filterProducts() {
+
+        const search =
+            document.getElementById(
+                "productSearch"
+            )
+            .value
+            .toLowerCase();
+
+
+        renderProducts(
+            products.filter(product => {
+
+                const text = [
+
+                    product.productId,
+
+                    product.sku,
+
+                    product.name,
+
+                    product.category,
+
+                    product.brand
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return text.includes(
+                    search
+                );
+            })
+        );
+    }
+
+
+    function openProductModal() {
+
+        document.getElementById(
+            "productForm"
+        ).reset();
+
+
+        document
+            .getElementById(
+                "productModal"
+            )
+            .classList
+            .add("show");
+    }
+
+
+    document.getElementById(
+        "productForm"
+    ).addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                await api(
+                    "/api/products",
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                productId:
+                                    document.getElementById(
+                                        "productId"
+                                    ).value.trim(),
+
+                                sku:
+                                    document.getElementById(
+                                        "productSku"
+                                    ).value.trim(),
+
+                                name:
+                                    document.getElementById(
+                                        "productName"
+                                    ).value.trim(),
+
+                                category:
+                                    document.getElementById(
+                                        "productCategory"
+                                    ).value.trim(),
+
+                                brand:
+                                    document.getElementById(
+                                        "productBrand"
+                                    ).value.trim(),
+
+                                price:
+                                    Number(
+                                        document.getElementById(
+                                            "productPrice"
+                                        ).value
+                                    ),
+
+                                stockQuantity:
+                                    Number(
+                                        document.getElementById(
+                                            "productStock"
+                                        ).value
+                                    ),
+
+                                imageUrl:
+                                    document.getElementById(
+                                        "productImageUrl"
+                                    ).value.trim() ||
+                                    null
+
+                            })
+                    }
+                );
+
+
+                closeModal(
+                    "productModal"
+                );
+
+
+                toast(
+                    "Product added successfully.",
+                    "success"
+                );
+
+
+                loadProducts();
+
+            } catch (error) {
+
+                toast(
+                    error.message,
+                    "error"
+                );
+            }
+        }
+    );
+
+
+    /* =====================================================
+       TICKETS
+    ====================================================== */
+
+    async function loadTickets() {
+
+        const body =
+            document.getElementById(
+                "ticketsTable"
+            );
+
+
+        body.innerHTML = `
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty">
+                        Loading tickets...
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/tickets"
+                );
+
+
+            tickets =
+                extractList(
+                    data,
+                    [
+                        "tickets",
+                        "items",
+                        "results"
+                    ]
+                );
+
+
+            renderTickets();
+
+
+            document.getElementById(
+                "dashboardTickets"
+            ).textContent =
+                tickets.filter(ticket =>
+                    ![
+                        "RESOLVED",
+                        "CLOSED"
+                    ].includes(
+                        String(
+                            ticket.status ||
+                            ""
+                        ).toUpperCase()
+                    )
+                ).length;
+
+
+            updateTicketStatsOnDashboard();
+
+        } catch (error) {
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td colspan="8">
+
+                        <div class="empty">
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+        }
+    }
+
+
+    function renderTickets(
+        list = tickets
+    ) {
+
+        const body =
+            document.getElementById(
+                "ticketsTable"
+            );
+
+
+        if (!list.length) {
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td colspan="8">
+
+                        <div class="empty">
+                            No support tickets found.
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        body.innerHTML =
+            list.map(ticket => {
+
+                const priority =
+                    String(
+                        ticket.priority ||
+                        "LOW"
+                    ).toUpperCase();
+
+
+                const priorityClass =
+                    `badge-${priority.toLowerCase()}`;
+
+
+                const sentiment =
+                    String(
+                        ticket.sentiment ||
+                        "NEUTRAL"
+                    ).toUpperCase();
+
+
+                let sentimentClass =
+                    "badge-neutral";
+
+
+                if (
+                    sentiment ===
+                    "NEGATIVE"
+                ) {
+
+                    sentimentClass =
+                        "badge-negative";
+
+                } else if (
+                    sentiment ===
+                    "POSITIVE"
+                ) {
+
+                    sentimentClass =
+                        "badge-positive";
+                }
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    ticket.ticketId ||
+                                    ticket.id ||
+                                    "—"
+                                )}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                ticket.customer?.name ||
+                                "—"
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                ticket.title ||
+                                ticket.issueType ||
+                                "Support Issue"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    badge
+                                    ${priorityClass}
+                                "
+                            >
+                                ${escapeHtml(
+                                    priority
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    badge
+                                    ${sentimentClass}
+                                "
+                            >
+                                ${escapeHtml(
+                                    sentiment
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${Number(
+                                ticket.priorityScore ||
+                                0
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                ticket.status ||
+                                "OPEN"
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <div
+                                class="ticket-actions"
+                            >
+
+                                <button
+                                    class="
+                                        action-btn
+                                    "
+                                    onclick="
+                                        viewTicket(
+                                            ${ticket.id}
+                                        )
+                                    "
+                                >
+                                    View
+                                </button>
+
+
+                                <button
+                                    class="
+                                        action-btn
+                                        respond-btn
+                                    "
+                                    onclick="
+                                        manageTicket(
+                                            ${ticket.id}
+                                        )
+                                    "
+                                >
+                                    Respond
+                                </button>
+
+
+                                <button
+                                    class="
+                                        action-btn
+                                        delete-btn
+                                    "
+                                    onclick="
+                                        deleteTicket(
+                                            ${ticket.id}
+                                        )
+                                    "
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+    }
+
+
+    async function viewTicket(
+        id
+    ) {
+
+        try {
+
+            const ticket =
+                await api(
+                    `/api/tickets/${id}`
+                );
+
+
+            currentTicket =
+                ticket;
+
+
+            renderTicketModal(
+                ticket
+            );
+
+
+            document
+                .getElementById(
+                    "ticketModal"
+                )
+                .classList
+                .add("show");
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    async function manageTicket(
+        id
+    ) {
+
+        await viewTicket(
+            id
+        );
+    }
+
+
+    function renderTicketModal(
+        ticket
+    ) {
+
+        const evidence =
+            ticket.evidenceImageUrl;
+
+
+        const responseText =
+            ticket.adminResponse ||
+            "";
+
+
+        const assigned =
+            ticket.assignedAdmin ||
+            "Unassigned";
+
+
+        document.getElementById(
+            "ticketModalBody"
+        ).innerHTML = `
+
+            <div
+                class="ticket-detail-title"
+            >
+                ${escapeHtml(
+                    ticket.title ||
+                    "Support Ticket"
+                )}
+            </div>
+
+
+            <div
+                class="ticket-detail-id"
+            >
+                ${escapeHtml(
+                    ticket.ticketId ||
+                    `#${ticket.id}`
+                )}
+            </div>
+
+
+            <div
+                class="detail-grid"
+            >
+
+                <div class="detail-box">
+
+                    <span>
+                        CUSTOMER
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.customer?.name ||
+                            "—"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        CUSTOMER ID
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.customer?.customerId ||
+                            "—"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        ORDER
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.order?.orderId ||
+                            ticket.orderId ||
+                            "—"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        CATEGORY
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.category ||
+                            "GENERAL"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        PRIORITY
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.priority ||
+                            "LOW"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        SCORE
+                    </span>
+
+                    <strong>
+                        ${Number(
+                            ticket.priorityScore ||
+                            0
+                        )}/100
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        SENTIMENT
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.sentiment ||
+                            "NEUTRAL"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        URGENCY
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.urgency ||
+                            "LOW"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        ESCALATION
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            ticket.escalationRisk ||
+                            "LOW"
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <span class="section-label">
+                Customer Issue
+            </span>
+
+
+            <div
+                class="description-box"
+            >
+                ${escapeHtml(
+                    ticket.description ||
+                    "No description."
+                )}
+            </div>
+
+
+            ${
+                evidence
+                    ? `
+
+                        <span class="section-label">
+                            Customer Evidence
+                        </span>
+
+                        <img
+                            class="evidence-image"
+                            src="${escapeHtml(
+                                evidence
+                            )}"
+                            alt="Customer evidence"
+                            onclick="
+                                window.open(
+                                    '${escapeHtml(
+                                        evidence
+                                    )}',
+                                    '_blank'
+                                )
+                            "
+                        >
+
+                      `
+                    : ""
+            }
+
+
+            <div class="ai-box">
+
+                <h3>
+                    QueueBot AI Analysis
+                </h3>
+
+
+                <p>
+                    <strong>
+                        Why this priority:
+                    </strong><br>
+
+                    ${escapeHtml(
+                        ticket.priorityReason ||
+                        "No explanation available."
+                    )}
+                </p>
+
+
+                <p>
+                    <strong>
+                        Suggested Response:
+                    </strong><br>
+
+                    ${escapeHtml(
+                        ticket.suggestedResponse ||
+                        "No suggested response available."
+                    )}
+                </p>
+
+            </div>
+
+
+            <div class="seller-response">
+
+                <h3>
+                    Current Seller Response
+                </h3>
+
+                <p>
+                    ${
+                        responseText
+                            ? escapeHtml(
+                                responseText
+                              )
+                            : "No seller response yet."
+                    }
+                </p>
+
+                <p
+                    style="
+                        margin-top:7px;
+                        color:#748496;
+                        font-size:10px;
+                    "
+                >
+                    Assigned:
+                    ${escapeHtml(
+                        assigned
+                    )}
+                </p>
+
+            </div>
+
+
+            <div class="response-area">
+
+                <span class="section-label">
+                    Send Response
+                </span>
+
+
+                <textarea
+                    id="adminResponseText"
+                    placeholder="
+                        Write your response to the customer...
+                    "
+                >${escapeHtml(
+                    responseText
+                )}</textarea>
+
+
+                <div class="response-row">
+
+                    <select
+                        id="responseStatus"
+                    >
+
+                        <option value="IN_PROGRESS"
+                            ${
+                                ticket.status ===
+                                "IN_PROGRESS"
+                                    ? "selected"
+                                    : ""
+                            }
+                        >
+                            IN_PROGRESS
+                        </option>
+
+                        <option value="RESOLVED"
+                            ${
+                                ticket.status ===
+                                "RESOLVED"
+                                    ? "selected"
+                                    : ""
+                            }
+                        >
+                            RESOLVED
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="sendTicketResponse()"
+                    >
+                        Send Response
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    gap:9px;
+                    margin-top:12px;
+                    flex-wrap:wrap;
+                "
+            >
+
+                <button
+                    class="secondary-btn"
+                    onclick="assignTicketToMe()"
+                >
+                    Assign To Me
+                </button>
+
+
+                ${
+                    ticket.status !==
+                    "RESOLVED"
+
+                        ? `
+
+                            <button
+                                class="
+                                    secondary-btn
+                                "
+                                onclick="
+                                    resolveTicketQuickly()
+                                "
+                            >
+                                Resolve Ticket
+                            </button>
+
+                          `
+
+                        : ""
+                }
+
+            </div>
+
+        `;
+    }
+
+
+    async function sendTicketResponse() {
+
+        if (!currentTicket) {
+            return;
+        }
+
+
+        const response =
+            document.getElementById(
+                "adminResponseText"
+            )
+            .value
+            .trim();
+
+
+        const status =
+            document.getElementById(
+                "responseStatus"
+            ).value;
+
+
+        if (!response) {
+
+            toast(
+                "Write a response first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const updated =
+                await api(
+                    `/api/tickets/${currentTicket.id}/respond`,
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                response:
+                                    response,
+
+                                status:
+                                    status
+
+                            })
+                    }
+                );
+
+
+            currentTicket =
+                updated;
+
+
+            renderTicketModal(
+                updated
+            );
+
+
+            toast(
+                "Response sent successfully.",
+                "success"
+            );
+
+
+            await loadTickets();
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    async function assignTicketToMe() {
+
+        if (!currentTicket) {
+            return;
+        }
+
+
+        try {
+
+            const updated =
+                await api(
+                    `/api/tickets/${currentTicket.id}/assign`,
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                adminIdentifier:
+                                    ""
+
+                            })
+                    }
+                );
+
+
+            currentTicket =
+                updated;
+
+
+            renderTicketModal(
+                updated
+            );
+
+
+            toast(
+                "Ticket assigned to you.",
+                "success"
+            );
+
+
+            loadTickets();
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    async function resolveTicketQuickly() {
+
+        if (!currentTicket) {
+            return;
+        }
+
+
+        try {
+
+            const text =
+                document.getElementById(
+                    "adminResponseText"
+                )
+                .value
+                .trim();
+
+
+            const response =
+                text ||
+                "Your issue has been reviewed and resolved by our support team.";
+
+
+            const updated =
+                await api(
+                    `/api/tickets/${currentTicket.id}/respond`,
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                response:
+                                    response,
+
+                                status:
+                                    "RESOLVED"
+
+                            })
+                    }
+                );
+
+
+            currentTicket =
+                updated;
+
+
+            renderTicketModal(
+                updated
+            );
+
+
+            toast(
+                "Ticket resolved.",
+                "success"
+            );
+
+
+            loadTickets();
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    async function deleteTicket(
+        id
+    ) {
+
+        if (
+            !confirm(
+                "Delete this ticket?"
+            )
+        ) {
+
+            return;
+        }
+
+
+        try {
+
+            await api(
+                `/api/tickets/${id}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+
+            toast(
+                "Ticket deleted.",
+                "success"
+            );
+
+
+            loadTickets();
+
+        } catch (error) {
+
+            toast(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       STATS
+    ====================================================== */
+
+    async function loadTicketStats() {
+
+        try {
+
+            const stats =
+                await api(
+                    "/api/tickets/stats"
+                );
+
+
+            document.getElementById(
+                "analyticsTotal"
+            ).textContent =
+                stats.totalTickets || 0;
+
+
+            document.getElementById(
+                "analyticsCritical"
+            ).textContent =
+                stats.criticalTickets || 0;
+
+
+            document.getElementById(
+                "analyticsHigh"
+            ).textContent =
+                stats.highPriorityTickets || 0;
+
+
+            document.getElementById(
+                "analyticsNegative"
+            ).textContent =
+                stats.negativeSentimentTickets || 0;
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    }
+
+
+    async function updateTicketStatsOnDashboard() {
+
+        try {
+
+            const stats =
+                await api(
+                    "/api/tickets/stats"
+                );
+
+
+            document.getElementById(
+                "criticalCount"
+            ).textContent =
+                stats.criticalTickets || 0;
+
+
+            document.getElementById(
+                "highCount"
+            ).textContent =
+                stats.highPriorityTickets || 0;
+
+
+            document.getElementById(
+                "averageScore"
+            ).textContent =
+                Number(
+                    stats.averagePriorityScore ||
+                    0
+                ).toFixed(1);
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    }
+
+
+    /* =====================================================
+       INITIALIZE
+    ====================================================== */
+
+    async function initialize() {
+
+        await loadUser();
+
+        await Promise.allSettled([
+
+            loadCustomers(),
+
+            loadOrders(),
+
+            loadProducts(),
+
+            loadTickets()
+
+        ]);
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initialize
+    );
+
+
+    /* =====================================================
+       MODAL OUTSIDE CLICK
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            ".modal-overlay"
+        )
+        .forEach(
+            overlay => {
+
+                overlay.addEventListener(
+                    "click",
+                    event => {
+
+                        if (
+                            event.target ===
+                            overlay
+                        ) {
+
+                            overlay.classList.remove(
+                                "show"
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+</script>
+
+</body>
+
+</html>
+```

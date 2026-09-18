@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>QueueBot | Sign In</title>
+
+
+    <style>
+
+        /* =========================================================
+           RESET
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* =========================================================
+           PAGE
+           ========================================================= */
+
+        body {
+            min-height: 100vh;
+
+            padding: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #111827;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef5ff,
+                    #f8fbff
+                );
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+        .login-card {
+            width: min(1320px, 100%);
+
+            min-height: 720px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            background: #ffffff;
+
+            border-radius: 26px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 28px 80px
+                rgba(15, 23, 42, 0.15);
+        }
+
+
+        /* =========================================================
+           LEFT SIDE
+           ========================================================= */
+
+        .brand {
+            position: relative;
+
+            min-height: 720px;
+
+            overflow: hidden;
+
+            padding:
+                44px 44px 30px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    155deg,
+                    #1a3359 0%,
+                    #0d1d35 55%,
+                    #071424 100%
+                );
+        }
+
+
+        /* Decorative glow */
+
+        .brand::before {
+            content: "";
+
+            position: absolute;
+
+            width: 520px;
+            height: 520px;
+
+            border-radius: 50%;
+
+            top: -270px;
+            right: -230px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(70, 166, 255, 0.12),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .brand::after {
+            content: "";
+
+            position: absolute;
+
+            width: 700px;
+            height: 180px;
+
+            left: -170px;
+            bottom: -105px;
+
+            border-radius: 50%;
+
+            border-top:
+                1px solid
+                rgba(62, 167, 255, 0.20);
+
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(22, 118, 203, 0.16),
+                    transparent 70%
+                );
+
+            transform: rotate(-6deg);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           LOGO
+           ========================================================= */
+
+        .logo {
+            position: relative;
+
+            z-index: 20;
+
+            font-size: 32px;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -1.3px;
+        }
+
+
+        .logo span {
+            color: #69b0f3;
+        }
+
+
+        .tagline {
+            position: relative;
+
+            z-index: 20;
+
+            margin-top: 7px;
+
+            color: #8dbce7;
+
+            font-size: 10px;
+
+            letter-spacing: 6px;
+        }
+
+
+        /* =========================================================
+           LEFT HEADING
+
+           Positioned at TOP-RIGHT of left panel.
+           Completely separate from robot.
+           ========================================================= */
+
+        .brand-copy {
+            position: absolute;
+
+            z-index: 10;
+
+            top: 118px;
+
+            right: 38px;
+
+            width: 315px;
+        }
+
+
+        .brand-copy h1 {
+            font-size: 47px;
+
+            line-height: 1.02;
+
+            letter-spacing: -2.6px;
+
+            font-weight: 800;
+        }
+
+
+        .brand-copy h1 span {
+            color: #68aff2;
+        }
+
+
+        .brand-copy p {
+            width: 285px;
+
+            margin-top: 22px;
+
+            color: #dbe9f8;
+
+            font-size: 16px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =========================================================
+           ROBOT
+
+           Robot stays on LEFT/BOTTOM.
+           ========================================================= */
+
+        .robot {
+            position: absolute;
+
+            z-index: 4;
+
+            left: 0;
+
+            bottom: 5px;
+
+            width: 365px;
+
+            height: auto;
+
+            max-height: 575px;
+
+            object-fit: contain;
+
+            object-position: bottom left;
+
+            filter:
+                drop-shadow(
+                    0 20px 25px
+                    rgba(0, 0, 0, 0.35)
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           SPEECH BUBBLE
+
+           Dedicated area between heading and feature cards.
+           It does NOT sit on the heading.
+           ========================================================= */
+
+        .speech {
+            position: absolute;
+
+            z-index: 12;
+
+            right: 42px;
+
+            top: 335px;
+
+            width: 205px;
+
+            padding:
+                18px 21px;
+
+            border-radius: 22px;
+
+            background:
+                rgba(17, 54, 89, 0.90);
+
+            border:
+                1px solid
+                rgba(96, 184, 255, 0.28);
+
+            box-shadow:
+                0 14px 30px
+                rgba(0, 0, 0, 0.23);
+
+            color: #ffffff;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            line-height: 1.15;
+
+            transform: rotate(-2deg);
+
+            backdrop-filter: blur(8px);
+        }
+
+
+        .speech::after {
+            content: "";
+
+            position: absolute;
+
+            left: 24px;
+
+            bottom: -20px;
+
+            width: 0;
+            height: 0;
+
+            border-top:
+                22px solid
+                rgba(17, 54, 89, 0.90);
+
+            border-right:
+                16px solid
+                transparent;
+        }
+
+
+        .speech-line {
+            width: 68px;
+
+            height: 2px;
+
+            margin-top: 10px;
+
+            border-radius: 10px;
+
+            background: #43b6ff;
+        }
+
+
+        /* =========================================================
+           THREE FEATURE CARDS
+
+           Fixed in bottom-right.
+           Robot stays on left.
+           ========================================================= */
+
+        .brand-features {
+            position: absolute;
+
+            z-index: 15;
+
+            right: 28px;
+
+            bottom: 26px;
+
+            width: 285px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+        }
+
+
+        .feature-card {
+            min-height: 92px;
+
+            padding:
+                10px 6px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            background:
+                rgba(8, 34, 59, 0.90);
+
+            border:
+                1px solid
+                rgba(84, 170, 240, 0.22);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.20);
+
+            backdrop-filter: blur(8px);
+        }
+
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+
+            display: grid;
+
+            place-items: center;
+
+            margin-bottom: 7px;
+
+            border-radius: 10px;
+
+            color: #58a8ff;
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            background:
+                rgba(42, 120, 193, 0.15);
+
+            border:
+                1px solid
+                rgba(85, 166, 235, 0.20);
+        }
+
+
+        .feature-card span:last-child {
+            color: #dbeafb;
+
+            font-size: 11px;
+
+            line-height: 1.2;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           RIGHT SIDE
+           ========================================================= */
+
+        .right {
+            position: relative;
+
+            padding:
+                42px 62px 36px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            background: #ffffff;
+        }
+
+
+        /* =========================================================
+           CREATE ACCOUNT
+           ========================================================= */
+
+        .back {
+            position: absolute;
+
+            top: 28px;
+
+            right: 48px;
+        }
+
+
+        .back a {
+            color: #4277e8;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           HEADING
+           ========================================================= */
+
+        .heading h2 {
+            margin-bottom: 11px;
+
+            color: #111827;
+
+            font-size: 48px;
+
+            line-height: 1.05;
+
+            letter-spacing: -2.5px;
+        }
+
+
+        .heading p {
+            margin-bottom: 28px;
+
+            color: #718096;
+
+            font-size: 17px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           MODE SWITCH
+           ========================================================= */
+
+        .modes {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 5px;
+
+            padding: 5px;
+
+            margin-bottom: 25px;
+
+            border-radius: 15px;
+
+            background: #f1f4f8;
+        }
+
+
+        .mode {
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: transparent;
+
+            color: #65748a;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .mode.active {
+            background: #ffffff;
+
+            color: #4277e8;
+
+            box-shadow:
+                0 3px 10px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        /* =========================================================
+           MESSAGE
+           ========================================================= */
+
+        .message {
+            display: none;
+
+            padding:
+                12px 14px;
+
+            margin-bottom: 17px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            line-height: 1.45;
+        }
+
+
+        .message.show {
+            display: block;
+        }
+
+
+        .message.error {
+            color: #c53030;
+
+            background: #fff1f1;
+
+            border:
+                1px solid
+                #ffd2d2;
+        }
+
+
+        .message.success {
+            color: #19713d;
+
+            background: #effcf4;
+
+            border:
+                1px solid
+                #ccefd9;
+        }
+
+
+        /* =========================================================
+           FORM
+           ========================================================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #111827;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        input {
+            width: 100%;
+
+            height: 55px;
+
+            padding:
+                0 15px;
+
+            outline: none;
+
+            border:
+                1px solid
+                #d9e1eb;
+
+            border-radius: 11px;
+
+            color: #111827;
+
+            background: #ffffff;
+
+            font-size: 16px;
+        }
+
+
+        input::placeholder {
+            color: #8290a5;
+        }
+
+
+        input:focus {
+            border-color: #72a6ef;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(70, 120, 230, 0.10);
+        }
+
+
+        /* =========================================================
+           PASSWORD
+           ========================================================= */
+
+        .password {
+            position: relative;
+        }
+
+
+        .password input {
+            padding-right: 50px;
+        }
+
+
+        .show {
+            position: absolute;
+
+            top: 50%;
+
+            right: 12px;
+
+            width: 34px;
+            height: 34px;
+
+            padding: 0;
+
+            transform:
+                translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #718096;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================================================
+           FORGOT PASSWORD
+           ========================================================= */
+
+        .forgot {
+            margin-top: -5px;
+
+            margin-bottom: 22px;
+
+            text-align: right;
+        }
+
+
+        .forgot a {
+            color: #1877f2;
+
+            font-size: 14px;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           SIGN IN BUTTON
+           ========================================================= */
+
+        .submit {
+            width: 100%;
+
+            height: 55px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4e80ec,
+                    #168faa
+                );
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition:
+                transform .15s ease,
+                opacity .15s ease;
+        }
+
+
+        .submit:hover {
+            opacity: 0.96;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .submit:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =========================================================
+           REGISTER
+           ========================================================= */
+
+        .register {
+            margin-top: 22px;
+
+            color: #718096;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        .register a {
+            color: #4277e8;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .footer-note {
+            margin-top: 32px;
+
+            color: #8290a5;
+
+            text-align: center;
+
+            font-size: 12px;
+        }
+
+
+        .footer-line {
+            width: 32px;
+
+            height: 2px;
+
+            margin:
+                0 auto 11px;
+
+            border-radius: 10px;
+
+            background: #3f8df1;
+        }
+
+
+        /* =========================================================
+           MEDIUM SCREEN
+           ========================================================= */
+
+        @media (max-width: 1150px) {
+
+            .brand {
+                padding-left: 30px;
+                padding-right: 25px;
+            }
+
+
+            .brand-copy {
+                right: 25px;
+
+                width: 275px;
+            }
+
+
+            .brand-copy h1 {
+                font-size: 40px;
+            }
+
+
+            .brand-copy p {
+                width: 245px;
+            }
+
+
+            .robot {
+                width: 330px;
+            }
+
+
+            .speech {
+                right: 28px;
+
+                width: 185px;
+
+                top: 330px;
+            }
+
+
+            .brand-features {
+                right: 18px;
+
+                width: 250px;
+            }
+
+
+            .right {
+                padding-left: 42px;
+                padding-right: 42px;
+            }
+        }
+
+
+        /* =========================================================
+           TABLET
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .login-card {
+                grid-template-columns: 1fr;
+            }
+
+
+            .brand {
+                min-height: 520px;
+            }
+
+
+            .brand-copy {
+                top: 100px;
+
+                right: 35px;
+
+                width: 300px;
+            }
+
+
+            .brand-copy h1 {
+                font-size: 42px;
+            }
+
+
+            .robot {
+                width: 300px;
+            }
+
+
+            .speech {
+                top: 315px;
+
+                right: 40px;
+            }
+
+
+            .brand-features {
+                width: 270px;
+
+                right: 25px;
+
+                bottom: 25px;
+            }
+
+
+            .right {
+                min-height: 650px;
+
+                padding:
+                    60px 45px 42px;
+            }
+        }
+
+
+        /* =========================================================
+           SMALL TABLET / MOBILE
+           ========================================================= */
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 12px;
+            }
+
+
+            .brand {
+                min-height: 430px;
+
+                padding:
+                    28px 24px;
+            }
+
+
+            .logo {
+                font-size: 27px;
+            }
+
+
+            .tagline {
+                font-size: 8px;
+
+                letter-spacing: 4px;
+            }
+
+
+            .brand-copy {
+                top: 95px;
+
+                left: 24px;
+
+                right: auto;
+
+                width: 230px;
+            }
+
+
+            .brand-copy h1 {
+                font-size: 31px;
+            }
+
+
+            .brand-copy p {
+                width: 220px;
+
+                margin-top: 15px;
+
+                font-size: 13px;
+            }
+
+
+            .robot {
+                width: 210px;
+
+                left: 0;
+
+                bottom: 5px;
+            }
+
+
+            .speech {
+                top: 275px;
+
+                right: 18px;
+
+                width: 150px;
+
+                padding:
+                    13px 15px;
+
+                font-size: 14px;
+            }
+
+
+            .brand-features {
+                right: 12px;
+
+                bottom: 13px;
+
+                width: 205px;
+
+                gap: 5px;
+            }
+
+
+            .feature-card {
+                min-height: 66px;
+
+                padding:
+                    7px 4px;
+            }
+
+
+            .feature-icon {
+                width: 27px;
+                height: 27px;
+
+                margin-bottom: 4px;
+
+                font-size: 14px;
+            }
+
+
+            .feature-card span:last-child {
+                font-size: 8px;
+            }
+
+
+            .right {
+                min-height: 620px;
+
+                padding:
+                    60px 22px 34px;
+            }
+
+
+            .back {
+                right: 22px;
+            }
+
+
+            .heading h2 {
+                font-size: 38px;
+            }
+
+
+            .heading p {
+                font-size: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-card">
+
+
+    <!-- =========================================================
+         LEFT PANEL
+         ========================================================= -->
+
+    <section class="brand">
+
+
+        <!-- Logo -->
+
+        <div class="logo">
+            Queue<span>Bot</span>
+        </div>
+
+
+        <div class="tagline">
+            SUPPORT MADE SIMPLE
+        </div>
+
+
+
+        <!-- =====================================================
+             HEADING
+             ===================================================== -->
+
+        <div class="brand-copy">
+
+            <h1>
+                Smart support.<br>
+                <span>Connected customers.</span>
+            </h1>
+
+
+            <p>
+                Manage your orders and get intelligent support
+                whenever you need it.
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             ROBOT
+             ===================================================== -->
+
+        <img
+                src="/queuebot.png"
+                alt="QueueBot"
+                class="robot"
+        >
+
+
+
+        <!-- =====================================================
+             SPEECH BUBBLE
+             ===================================================== -->
+
+        <div class="speech">
+
+            Let's<br>
+            get you in!
+
+            <div class="speech-line"></div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             BOTTOM FEATURE CARDS
+             ===================================================== -->
+
+        <div class="brand-features">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    □
+                </div>
+
+                <span>
+                    View<br>
+                    Your Orders
+                </span>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ▢
+                </div>
+
+                <span>
+                    Report<br>
+                    Issues
+                </span>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <span>
+                    Quick<br>
+                    Support
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         RIGHT PANEL
+         ========================================================= -->
+
+    <section class="right">
+
+
+        <!-- Create account -->
+
+        <div class="back">
+
+            <a href="/register.html">
+                Create an account →
+            </a>
+
+        </div>
+
+
+
+        <!-- Heading -->
+
+        <div class="heading">
+
+            <h2>
+                Welcome back 👋
+            </h2>
+
+
+            <p id="loginSubtitle">
+                Sign in to your QueueBot account.
+            </p>
+
+        </div>
+
+
+
+        <!-- Customer / Seller -->
+
+        <div class="modes">
+
+
+            <button
+                    type="button"
+                    class="mode active"
+                    id="customerMode"
+                    onclick="switchMode('customer')"
+            >
+                Customer
+            </button>
+
+
+            <button
+                    type="button"
+                    class="mode"
+                    id="sellerMode"
+                    onclick="switchMode('seller')"
+            >
+                Seller / Admin
+            </button>
+
+
+        </div>
+
+
+
+        <!-- Message -->
+
+        <div
+                id="message"
+                class="message"
+        ></div>
+
+
+
+        <!-- =====================================================
+             LOGIN FORM
+             ===================================================== -->
+
+        <form
+                id="loginForm"
+                method="POST"
+                action="/auth/login"
+                onsubmit="return prepareLogin(event)"
+        >
+
+
+            <!-- =================================================
+                 CUSTOMER
+
+                 Phone / Email ONLY
+                 ================================================= -->
+
+            <div id="customerFields">
+
+
+                <div class="form-group">
+
+                    <label for="customerIdentifier">
+                        Phone or Email
+                    </label>
+
+
+                    <input
+                            type="text"
+                            id="customerIdentifier"
+                            placeholder="Enter your phone number or email"
+                            autocomplete="username"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SELLER / ADMIN
+                 ================================================= -->
+
+            <div
+                    id="sellerFields"
+                    style="display:none;"
+            >
+
+
+                <div class="form-group">
+
+                    <label for="sellerId">
+                        Seller ID
+                    </label>
+
+
+                    <input
+                            type="text"
+                            id="sellerId"
+                            placeholder="e.g. SELLER-0047"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="sellerIdentifier">
+                        Phone or Email
+                    </label>
+
+
+                    <input
+                            type="text"
+                            id="sellerIdentifier"
+                            placeholder="Enter your phone number or email"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PASSWORD
+                 ================================================= -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="password">
+
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                    >
+
+
+                    <button
+                            type="button"
+                            class="show"
+                            onclick="togglePassword()"
+                            aria-label="Show password"
+                    >
+                        ◉
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Forgot password -->
+
+            <div class="forgot">
+
+                <a href="#">
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SPRING SECURITY USERNAME
+
+                 CUSTOMER:
+                 phone/email
+
+                 SELLER:
+                 sellerId|phone/email
+                 ================================================= -->
+
+            <input
+                    type="hidden"
+                    id="username"
+                    name="username"
+            >
+
+
+
+            <!-- Sign in -->
+
+            <button
+                    type="submit"
+                    class="submit"
+                    id="submitButton"
+            >
+                Sign In →
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =====================================================
+             REGISTER
+             ===================================================== -->
+
+        <div class="register">
+
+            Don't have a QueueBot account?
+
+            <a href="/register.html">
+                Create one
+            </a>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FOOTER
+             ===================================================== -->
+
+        <div class="footer-note">
+
+            <div class="footer-line"></div>
+
+            One account. All your orders. Smarter support.
+
+        </div>
+
+
+    </section>
+
+</div>
+
+
+
+<script>
+
+
+    /* =========================================================
+       CURRENT LOGIN MODE
+       ========================================================= */
+
+    let currentMode = "customer";
+
+
+
+    /* =========================================================
+       SWITCH MODE
+       ========================================================= */
+
+    function switchMode(mode) {
+
+        currentMode = mode;
+
+
+        const customerMode =
+            document.getElementById(
+                "customerMode"
+            );
+
+
+        const sellerMode =
+            document.getElementById(
+                "sellerMode"
+            );
+
+
+        const customerFields =
+            document.getElementById(
+                "customerFields"
+            );
+
+
+        const sellerFields =
+            document.getElementById(
+                "sellerFields"
+            );
+
+
+        const customerIdentifier =
+            document.getElementById(
+                "customerIdentifier"
+            );
+
+
+        const sellerId =
+            document.getElementById(
+                "sellerId"
+            );
+
+
+        const sellerIdentifier =
+            document.getElementById(
+                "sellerIdentifier"
+            );
+
+
+        const subtitle =
+            document.getElementById(
+                "loginSubtitle"
+            );
+
+
+        clearMessage();
+
+
+
+        /* =====================================================
+           CUSTOMER
+           ===================================================== */
+
+        if (mode === "customer") {
+
+            customerMode
+                .classList
+                .add("active");
+
+
+            sellerMode
+                .classList
+                .remove("active");
+
+
+            customerFields.style.display =
+                "block";
+
+
+            sellerFields.style.display =
+                "none";
+
+
+            customerIdentifier.required =
+                true;
+
+
+            sellerId.required =
+                false;
+
+
+            sellerIdentifier.required =
+                false;
+
+
+            subtitle.textContent =
+                "Sign in to your QueueBot account.";
+
+        }
+
+
+
+        /* =====================================================
+           SELLER / ADMIN
+           ===================================================== */
+
+        else {
+
+            sellerMode
+                .classList
+                .add("active");
+
+
+            customerMode
+                .classList
+                .remove("active");
+
+
+            customerFields.style.display =
+                "none";
+
+
+            sellerFields.style.display =
+                "block";
+
+
+            customerIdentifier.required =
+                false;
+
+
+            sellerId.required =
+                true;
+
+
+            sellerIdentifier.required =
+                true;
+
+
+            subtitle.textContent =
+                "Sign in to your seller or administrator account.";
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       PREPARE LOGIN
+       ========================================================= */
+
+    function prepareLogin(event) {
+
+
+        const username =
+            document.getElementById(
+                "username"
+            );
+
+
+
+        /* =====================================================
+           CUSTOMER
+
+           Phone / Email ONLY
+           ===================================================== */
+
+        if (
+            currentMode === "customer"
+        ) {
+
+
+            const identifier =
+                document
+                    .getElementById(
+                        "customerIdentifier"
+                    )
+                    .value
+                    .trim();
+
+
+            if (!identifier) {
+
+                event.preventDefault();
+
+
+                showMessage(
+                    "Phone or Email is required.",
+                    "error"
+                );
+
+
+                return false;
+            }
+
+
+            /*
+             * Customer login:
+             *
+             * username = phone/email
+             */
+
+            username.value =
+                identifier;
+
+        }
+
+
+
+        /* =====================================================
+           SELLER / ADMIN
+           ===================================================== */
+
+        else {
+
+
+            const sellerId =
+                document
+                    .getElementById(
+                        "sellerId"
+                    )
+                    .value
+                    .trim();
+
+
+            const identifier =
+                document
+                    .getElementById(
+                        "sellerIdentifier"
+                    )
+                    .value
+                    .trim();
+
+
+            if (
+                !sellerId ||
+                !identifier
+            ) {
+
+                event.preventDefault();
+
+
+                showMessage(
+                    "Seller ID and Phone or Email are required.",
+                    "error"
+                );
+
+
+                return false;
+            }
+
+
+            /*
+             * Seller/Admin login:
+             *
+             * username =
+             * SELLER-ID|PHONE/EMAIL
+             */
+
+            username.value =
+                sellerId +
+                "|" +
+                identifier;
+
+        }
+
+
+        return true;
+
+    }
+
+
+
+    /* =========================================================
+       PASSWORD TOGGLE
+       ========================================================= */
+
+    function togglePassword() {
+
+        const input =
+            document.getElementById(
+                "password"
+            );
+
+
+        if (
+            input.type === "password"
+        ) {
+
+            input.type = "text";
+
+        } else {
+
+            input.type = "password";
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       SHOW MESSAGE
+       ========================================================= */
+
+    function showMessage(
+        message,
+        type
+    ) {
+
+        const box =
+            document.getElementById(
+                "message"
+            );
+
+
+        box.textContent =
+            message;
+
+
+        box.className =
+            "message show " + type;
+
+    }
+
+
+
+    /* =========================================================
+       CLEAR MESSAGE
+       ========================================================= */
+
+    function clearMessage() {
+
+        const box =
+            document.getElementById(
+                "message"
+            );
+
+
+        box.textContent = "";
+
+
+        box.className =
+            "message";
+
+    }
+
+
+
+    /* =========================================================
+       BACKEND LOGIN ERROR
+       ========================================================= */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    if (
+        params.get("error") === "true"
+    ) {
+
+        showMessage(
+            "Invalid phone/email, Seller ID, or password.",
+            "error"
+        );
+
+    }
+
+
+    if (
+        params.get("logout") === "true"
+    ) {
+
+        showMessage(
+            "You have been signed out.",
+            "success"
+        );
+
+    }
+
+
+
+    /* =========================================================
+       INITIAL MODE
+       ========================================================= */
+
+    switchMode("customer");
+
+
+</script>
+
+
+</body>
+</html>
