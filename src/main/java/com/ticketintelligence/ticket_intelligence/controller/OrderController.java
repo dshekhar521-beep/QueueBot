@@ -2,8 +2,11 @@ package com.ticketintelligence.ticket_intelligence.controller;
 
 import com.ticketintelligence.ticket_intelligence.entity.Order;
 import com.ticketintelligence.ticket_intelligence.entity.Seller;
+import com.ticketintelligence.ticket_intelligence.entity.User;
 import com.ticketintelligence.ticket_intelligence.service.OrderService;
 import com.ticketintelligence.ticket_intelligence.service.SellerService;
+import com.ticketintelligence.ticket_intelligence.service.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,14 +23,17 @@ public class OrderController {
 
     private final OrderService orderService;
     private final SellerService sellerService;
+    private final UserService userService;
 
 
     public OrderController(
             OrderService orderService,
-            SellerService sellerService
+            SellerService sellerService,
+            UserService userService
     ) {
         this.orderService = orderService;
         this.sellerService = sellerService;
+        this.userService = userService;
     }
 
 
@@ -304,16 +310,10 @@ public class OrderController {
                 authentication.getName();
 
 
-        /*
-         * Login format:
-         *
-         * SELLER_ID|PHONE_OR_EMAIL
-         */
-        int separator =
-                username.indexOf("|");
-
-
-        if (separator <= 0) {
+        if (
+                username == null ||
+                username.isBlank()
+        ) {
 
             throw new IllegalArgumentException(
                     "Invalid authenticated seller session."
@@ -321,19 +321,77 @@ public class OrderController {
         }
 
 
-        String sellerId =
-                username
-                        .substring(
-                                0,
-                                separator
-                        )
-                        .trim();
+        username =
+                username.trim();
 
 
-        return sellerService
-                .findBySellerId(
-                        sellerId
+        // ---------------------------------------------------------
+        // CURRENT LOGIN FORMAT
+        // Spring Security stores customerId as username.
+        // ---------------------------------------------------------
+
+        User user =
+                userService.findByCustomerId(
+                        username
                 );
+
+
+        if (
+                user != null &&
+                user.getSeller() != null
+        ) {
+
+            return user.getSeller();
+        }
+
+
+        // ---------------------------------------------------------
+        // OLD LOGIN FORMAT
+        // SELLER_ID|PHONE_OR_EMAIL
+        // ---------------------------------------------------------
+
+        int separator =
+                username.indexOf("|");
+
+
+        if (separator > 0) {
+
+            String sellerId =
+                    username
+                            .substring(
+                                    0,
+                                    separator
+                            )
+                            .trim();
+
+
+            return sellerService
+                    .findBySellerId(
+                            sellerId
+                    );
+        }
+
+
+        // ---------------------------------------------------------
+        // DIRECT SELLER ID FALLBACK
+        // ---------------------------------------------------------
+
+        try {
+
+            return sellerService
+                    .findBySellerId(
+                            username
+                    );
+
+        } catch (Exception ignored) {
+
+            // Continue to final error below.
+        }
+
+
+        throw new IllegalArgumentException(
+                "Invalid authenticated seller session."
+        );
     }
 
 
